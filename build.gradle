@@ -7,6 +7,7 @@ plugins {
 
 group = 'raisetech'
 version = '0.0.1-SNAPSHOT'
+//メジャーver.マイナーver.マイクロver
 
 java {
 	toolchain {
@@ -20,6 +21,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation("org.apache.commons:commons-lang3:3.17.0")
+	//アパッチコモンズラング→便利機能
+
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
