@@ -1,7 +1,5 @@
 package raisetech.student.management;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,13 +18,11 @@ public class Application {
 	private StudentRepository repository;
 
 
-	private String name = "Dai chihiro";
-	private String age = "49";
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-//sql
+//変更したよん
+
 	@GetMapping("/student") //学生情報を取得
 	public  String getStudent(@RequestParam String name){
 		Student student = repository.searchByName(name);
