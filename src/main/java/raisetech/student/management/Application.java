@@ -2,8 +2,10 @@ package raisetech.student.management;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,31 +16,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-	Map<String , String>studentMap = new HashMap<>();
+	@Autowired
+	private StudentRepository repository;
+
+
+	private String name = "Dai chihiro";
+	private String age = "49";
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-//これはmap-feature ブランチ
-	
-	@GetMapping("/studentInfo") //学生情報を取得
-	public  String getStudentInfo(){
-		String name = studentMap.get("name");
-		String age = studentMap.get("age");
-
-		return name + " " + age + "歳";
+//sql
+	@GetMapping("/student") //学生情報を取得
+	public  String getStudent(@RequestParam String name){
+		Student student = repository.searchByName(name);
+		return student.getName() + " " + student.getAge() + "歳";
 	}
-	@PostMapping("/studentInfo") //学生情報を登録
-	public String setStudentInfo(@RequestParam String name,@RequestParam String age){
-		studentMap.put("name" , name);
-		studentMap.put("age" , age);
-		return "登録完了";
+	@PostMapping("/student") //学生情報を登録
+	public void registerStudent(String name,int age){
+		repository.registerStudent(name,age);
 	}
 
-	@PostMapping("/studentName") //学生の名前だけ登録
-	public String updateStudentName(@RequestParam String name){
-		studentMap.put("name" , name);
-		return "更新完了";
+	@PatchMapping("/student") //学生の名前だけ登録
+	public void updateStudent(String name ,int age){
+		repository.updateStudent(name , age);
+	}
+
+	@DeleteMapping("/student")
+	public void deleteStudent(String name){
+		repository.deleteStudent(name);
 	}
 
 }
