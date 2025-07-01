@@ -7,12 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @SpringBootApplication
 @RestController
 public class Application {
 
 	@Autowired
 	private StudentRepository repository;
+	@Autowired
+	private StudentsCoursesRepository repository1;
 
 
 	public static void main(String[] args) {
@@ -22,6 +25,10 @@ public class Application {
 	@GetMapping("/studentList") //学生情報を取得
 	public List<Student> getStudentList() {
 		return repository.search();
+	}
+	@GetMapping("/studentscoursesList") //学生情報を取得
+	public List<StudentsCourses> getStudent_coursesList() {
+		return repository1.search();
 	}
 
 }
