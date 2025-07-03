@@ -27,7 +27,11 @@ repositories {
 }
 
 dependencies {
+	//Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+   //Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 
 	//アパッチコモンズラング→便利機能
 	implementation("org.apache.commons:commons-lang3:3.17.0")
