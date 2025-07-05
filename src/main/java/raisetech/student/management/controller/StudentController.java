@@ -56,7 +56,9 @@ public class StudentController {
     if(result.hasErrors()){  //エラーがあったら、registerStudentに返す処理
       return "registerStudent";
     }
+
     service.insertStudents(studentDetail.getStudent());
+
     return "redirect:/studentList";
   }
 }
