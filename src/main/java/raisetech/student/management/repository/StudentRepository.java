@@ -13,6 +13,7 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();
 
+
   //not nullの名前、フリガナ、mailだけ登録
   @Insert("INSERT INTO students(name,furigana,mail) VALUES(#{name},#{furigana},#{mail})")
   void insert(Student student);
