@@ -21,7 +21,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="studentDetail : ${studentList}">
+  <tr th:each="studentDetail : ${studentList}"> 　<!--Listの数だけ表示させるfor文みたいな感じ-->
     <td th:text="${studentDetail.student.id}">1</td>
     <td th:text="${studentDetail.student.name}">小久井杏奈</td>
     <td th:text="${studentDetail.student.furigana}">コクイアンナ</td>
