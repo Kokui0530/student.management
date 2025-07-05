@@ -5,16 +5,23 @@
   <title>受講生一覧登録</title>
 </head>
 <body>
-<h1>受講生登録</h1>
+<h1>受講生登録</h1><!--thがついてる部分はタイムリーフの属性-->
 <form th:action="@{/registerStudent}" th:object="${studentDetail}" method="post">
   <div>
     <label for="name">名前:</label>
-    <input type="text" id="name" th:field="{studentDetail.student.name}" required />
+    <input type="text" id="name" th:field="*{student.name}" required /> <!--studentDetailのstudentのnameに入れるよ-->
+  </div>
+  <div>
+    <label for="name">フリガナ:</label>
+    <input type="text" id="furigana" th:field="*{student.furigana}" required />
+  </div>
+  <div>
+    <label for="name">mail:</label>
+    <input type="text" id="mail" th:field="*{student.mail}" required />
   </div>
   <div>
     <button type="submit">登録</button>
   </div>
 </form>
-
 </body>
 </html>

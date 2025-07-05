@@ -26,10 +26,14 @@ public class StudentController {
     this.converter = converter;
   }
 
-  @GetMapping("/studentList") //学生情報を取得
-  public String getStudentList(Model model) {
+  //@GetMapping ページを表示するだけ（一覧、フォーム画面）
+  //@PostMapping データを送信・保存・削除など変更したい
+
+  @GetMapping("/studentList") //学生情報を取得、HTMLとの紐づけ
+  public String getStudentList(Model model) { //Model->HTMLに渡すデータを入れる入れ物。
     List<Student> students = service.searchStudentList();
     List<StudentsCourses> studentsCourses = service.searchStudentCoursesList();
+    //↓ HTMLに入れるリストを指示
     model.addAttribute("studentList" , converter.convertStudentDetails(students, studentsCourses));
     return "studentList";
   }
@@ -39,18 +43,20 @@ public class StudentController {
     return service.searchStudentCoursesList();
   }
 
-  @GetMapping("/newStudent")
+
+  @GetMapping("/newStudent")  //新規登録画面
   public String newStudent(Model model){
     model.addAttribute("studentDetail" , new StudentDetail());
     return "registerStudent";
   }
 
-  @PostMapping("/registerStudent")
+  @PostMapping("/registerStudent") //↓　Model->  StudentDetail　の　studentsDetailに値をいれる処理
   public String registerStudent(@ModelAttribute StudentDetail studentDetail , BindingResult result){
-    if(result.hasErrors()){
+    //BindingResult result->入力チェック
+    if(result.hasErrors()){  //エラーがあったら、registerStudentに返す処理
       return "registerStudent";
     }
+    service.insertStudents(studentDetail.getStudent());
     return "redirect:/studentList";
   }
-
 }
