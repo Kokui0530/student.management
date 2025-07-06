@@ -29,6 +29,7 @@ public class StudentService {
     return coursesRepository.search();
   }
 
+
   //データを挿入
   public void insertStudents (Student student){
     repository.insert(student);
