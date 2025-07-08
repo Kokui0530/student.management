@@ -5,15 +5,28 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentsCourses;
-
 
 @Mapper
 public interface StudentRepository {
 
+  //studentsのリスト表示
   @Select("SELECT * FROM students")
   List<Student> search();
+
+  //students単一表示
+  @Select("SELECT * FROM students WHERE id= #{id}")
+  Student searchStudent(String id);
+
+  //students_coursesのリスト表示
+  @Select("SELECT * FROM students_courses")
+  List<Student> searchStudentsCoursesList();
+
+  //students_coursesの単一表示
+  @Select("SELECT * FROM students_courses WHERE students_id= #{studentId}")
+  List<StudentsCourses> searchStudentsCourses(String studentId);
 
   //studentの後に登録するカラム名を入れないと、登録されてるカラム数とVALUESの数が一致していないとエラーになる
   //（テーブル名だけだと全件分という意味になる）
@@ -30,5 +43,16 @@ public interface StudentRepository {
           + "VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})")  //ここで使う名前を記載してOK
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudentsCourses(StudentsCourses studentsCourses);
+
+  //受講生登録情報の更新
+  @Update(
+      "UPDATE students SET name=#{name} , furigana=#{furigana} , nickname=#{nickname} , mail=#{mail} , region=#{region},"
+          + "age=#{age},gender=#{gender},remark=#{remark},isdeleted=#{isDeleted} WHERE id=#{id}")
+  void updateStudent(Student student);
+
+  //コース情報の更新
+  @Update(
+      "UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}")
+  void updateStudentCourses(StudentsCourses studentsCourses);
 
 }
