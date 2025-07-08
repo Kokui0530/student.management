@@ -9,7 +9,7 @@
 <table border="1">
   <thead>
   <tr>
-   <th>ID</th>
+    <th>ID</th>
     <th>名前</th>
     <th>カナ名</th>
     <th>ニックネーム</th>
@@ -20,8 +20,8 @@
     <th>備考</th>
   </tr>
   </thead>
-  <tbody>
-  <tr th:each="studentDetail : ${studentList}"> 　<!--Listの数だけ表示させるfor文みたいな感じ-->
+  <tbody>　　<!--Listの数だけ表示させるfor文みたいな感じ-->
+  <tr th:each="studentDetail : ${studentList}">
     <td th:text="${studentDetail.student.id}">1</td>
     <td th:text="${studentDetail.student.name}">小久井杏奈</td>
     <td th:text="${studentDetail.student.furigana}">コクイアンナ</td>

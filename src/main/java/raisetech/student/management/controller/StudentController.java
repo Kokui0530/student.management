@@ -1,5 +1,6 @@
 package raisetech.student.management.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ public class StudentController {
   private StudentConverter converter;
 
   @Autowired
-  public StudentController(StudentService service , StudentConverter converter) {
+  public StudentController(StudentService service, StudentConverter converter) {
     this.service = service;
     this.converter = converter;
   }
@@ -34,31 +35,35 @@ public class StudentController {
     List<Student> students = service.searchStudentList();
     List<StudentsCourses> studentsCourses = service.searchStudentCoursesList();
     //↓ HTMLに入れるリストを指示
-    model.addAttribute("studentList" , converter.convertStudentDetails(students, studentsCourses));
+    model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
     return "studentList";
   }
 
-  @GetMapping("/studentscoursesList") //学生情報を取得
+  @GetMapping("/studentsCoursesList") //学生情報を取得
   public List<StudentsCourses> getStudentCoursesList() {
     return service.searchStudentCoursesList();
   }
 
 
   @GetMapping("/newStudent")  //新規登録画面
-  public String newStudent(Model model){
-    model.addAttribute("studentDetail" , new StudentDetail());
+  public String newStudent(Model model) {
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
 
   @PostMapping("/registerStudent") //↓　Model->  StudentDetail　の　studentsDetailに値をいれる処理
-  public String registerStudent(@ModelAttribute StudentDetail studentDetail , BindingResult result){
+  public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     //BindingResult result->入力チェック
-    if(result.hasErrors()){  //エラーがあったら、registerStudentに返す処理
+    if (result.hasErrors()) {  //エラーがあったら、registerStudentに返す処理
       return "registerStudent";
     }
-
-    service.insertStudents(studentDetail.getStudent());
+    //新規受講生情報を登録
+    service.registerStudent(studentDetail);
 
     return "redirect:/studentList";
+
+
   }
 }
