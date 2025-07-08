@@ -56,25 +56,29 @@ public class StudentController {
     return "registerStudent";
   }
 
+    //新規受講生情報を登録
   @PostMapping("/registerStudent") //↓　Model->  StudentDetail　の　studentsDetailに値をいれる処理
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     //BindingResult result->入力チェック
     if (result.hasErrors()) {  //エラーがあったら、registerStudentに返す処理
       return "registerStudent";
     }
-    //新規受講生情報を登録
     service.registerStudent(studentDetail);
     return "redirect:/studentList";
   }
 
+  // 更新、削除
   @PostMapping("/updateStudent") //更新内容を入力するところ
   public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     //BindingResult result->入力チェック
     if (result.hasErrors()) {  //エラーがあったら、registerStudentに返す処理
       return "updateStudent";
     }
-    //新規受講生情報を登録
-    service.updateStudent(studentDetail);
+    if (studentDetail.getStudent().isDeleted()) { //退会するにチェックが入った場合の処理
+      service.deleteStudent(studentDetail);
+    } else {
+      service.updateStudent(studentDetail); //退会にチェックが入らなかったら、そのまま通常更新
+    }
     return "redirect:/studentList";
   }
 }
