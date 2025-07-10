@@ -33,6 +33,7 @@ public class StudentController {
 
   //@GetMapping ページを表示するだけ（一覧、フォーム画面）
   //@PostMapping データを送信・保存・削除など変更したい
+  //
 
   @GetMapping("/studentList") //学生情報を取得、HTMLとの紐づけ
   public List<StudentDetail> getStudentList() {
