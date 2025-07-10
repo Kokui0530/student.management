@@ -1,7 +1,6 @@
 package raisetech.student.management.repository;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -28,10 +27,6 @@ public interface StudentRepository {
   //students_coursesの単一表示
   @Select("SELECT * FROM students_courses WHERE students_id= #{studentId}")
   List<StudentsCourses> searchStudentsCourses(String studentId);
-
-  //退会した受講生以外を表示
-  @Select("SELECT * FROM students WHERE isDeleted = FALSE")
-  List<Student> nowSearch();
 
 
   //studentの後に登録するカラム名を入れないと、登録されてるカラム数とVALUESの数が一致していないとエラーになる
@@ -61,12 +56,4 @@ public interface StudentRepository {
       "UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}")
   void updateStudentCourses(StudentsCourses studentsCourses);
 
-  //退会　論理削除
-  @Delete(
-      "DELETE FROM students WHERE id = #{id}")
-  void deleteStudent(Student student);
-
-  @Delete(
-      "DELETE FROM students_courses WHERE id = #{id}")
-  void deleteStudentCourses(StudentsCourses studentsCourses);
 }

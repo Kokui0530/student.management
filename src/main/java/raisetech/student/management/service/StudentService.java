@@ -67,13 +67,4 @@ public class StudentService {
     }
   }
 
-  //受講生退会処理
-  @Transactional
-  public void deleteStudent(StudentDetail studentDetail) {
-    repository.deleteStudent(studentDetail.getStudent());
-    for (StudentsCourses studentsCourses : studentDetail.getStudentsCourses()) {
-      repository.deleteStudentCourses(studentsCourses);
-    }
   }
-
-}
