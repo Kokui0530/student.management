@@ -12,4 +12,38 @@
     SELECT * FROM students WHERE id= #{id}
   </select>
 
+  <!--受講生のコース情報の全件検索-->
+  <select id="searchStudentCourseList" resultType="raisetech.student.management.data.StudentCourse">
+    SELECT * FROM students_courses
+  </select>
+
+  <!--受講生IDに紐づく受講生コース情報を検索-->
+  <select id="searchStudentCourse" resultType="raisetech.student.management.data.StudentCourse">
+    SELECT * FROM students_courses WHERE students_id= #{studentId}
+  </select>
+
+
+  <!--受講生を新規登録 -->
+  <insert id="registerStudent" useGeneratedKeys = "true" keyProperty = "id">
+    INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,isdeleted)
+    VALUES(#{name}, #{furigana}, #{nickname}, #{mail}, #{region}, #{age}, #{gender}, #{remark},false)
+  </insert>
+
+  <!--受講生コース情報を新規登録 -->
+  <insert id="registerStudentCourse" useGeneratedKeys = "true" keyProperty = "id">
+    INSERT INTO students_courses(students_id ,courses_Name , start , end)
+    VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})
+  </insert>
+
+  <!--受講生を更新-->
+  <update id="updateStudent">
+    UPDATE students SET name=#{name} , furigana=#{furigana} , nickname=#{nickname} , mail=#{mail} , region=#{region},
+    age=#{age} , gender=#{gender} , remark=#{remark} , isdeleted=#{isDeleted} WHERE id=#{id}
+  </update>
+
+  <!--受講生コース情報のコース名を更新-->
+  <update id="updateStudentCourse">
+    UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}
+  </update>
+
 </mapper>
