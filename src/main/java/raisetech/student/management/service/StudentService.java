@@ -10,7 +10,6 @@ import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.repository.StudentRepository;
-import raisetech.student.management.repository.StudentsCoursesRepository;
 
 /**
  * 受講生情報を取り扱うサービスです。 受講生の検索や登録、更新処理を行います。
@@ -20,14 +19,11 @@ import raisetech.student.management.repository.StudentsCoursesRepository;
 public class StudentService {
 
   private StudentRepository repository;
-  private StudentsCoursesRepository coursesRepository;
   private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository, StudentConverter converter,
-      StudentsCoursesRepository coursesRepository) {
+  public StudentService(StudentRepository repository, StudentConverter converter){
     this.repository = repository;
-    this.coursesRepository = coursesRepository;
     this.converter = converter;
   }
 
