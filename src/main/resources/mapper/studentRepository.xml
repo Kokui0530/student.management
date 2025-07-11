@@ -12,4 +12,28 @@
     SELECT * FROM students WHERE id= #{id}
   </select>
 
+  <!--受講生のコース情報の全件検索-->
+  <select id="searchStudentCourseList" resultType="raisetech.student.management.data.StudentCourse">
+    SELECT * FROM students_courses
+  </select>
+
+  <!--受講生IDに紐づく受講生コース情報を検索-->
+  <select id="searchStudentCourse" resultType="raisetech.student.management.data.StudentCourse">
+    SELECT * FROM students_courses WHERE students_id= #{studentId}
+  </select>
+
+
+  <!--受講生を新規登録 -->
+  <insert id="registerStudent" useGeneratedKeys = "true" keyProperty = "id">
+    INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,isdeleted)
+    VALUES(#{name}, #{furigana}, #{nickname}, #{mail}, #{region}, #{age}, #{gender}, #{remark},false)
+  </insert>
+
+  <!--受講生コース情報を新規登録 -->
+  <insert id="registerStudentCourse" useGeneratedKeys = "true" keyProperty = "id">
+    INSERT INTO students_courses(students_id ,courses_Name , start , end)
+    VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})
+  </insert>
+
+
 </mapper>

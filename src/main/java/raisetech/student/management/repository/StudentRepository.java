@@ -1,10 +1,7 @@
 package raisetech.student.management.repository;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
@@ -36,7 +33,6 @@ public interface StudentRepository {
    *
    * @return 受講生のコース情報(全件)
    */
-  @Select("SELECT * FROM students_courses")
   List<StudentCourse> searchStudentCourseList();
 
   /**
@@ -45,7 +41,6 @@ public interface StudentRepository {
    * @param studentId 受講生ID
    * @return 受講生IDに紐づく受講生のコース情報
    */
-  @Select("SELECT * FROM students_courses WHERE students_id= #{studentId}")
   List<StudentCourse> searchStudentCourse(String studentId);
 
   /**
@@ -53,11 +48,6 @@ public interface StudentRepository {
    *
    * @param student 受講生
    */
-  @Insert(
-      "INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,isdeleted) "
-          + "VALUES(#{name}, #{furigana}, #{nickname}, #{mail}, #{region}, #{age}, #{gender}, #{remark},false)")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
-//自動採番がIDだよって指定
   void registerStudent(Student student);
 
   /**
@@ -65,10 +55,6 @@ public interface StudentRepository {
    *
    * @param studentCourse 受講生コース情報
    */
-  @Insert(
-      "INSERT INTO students_courses(students_Id ,courses_Name , start , end)" //SQLの登録と同じ名前にしないとNG
-          + "VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})")  //ここで使う名前を記載してOK
-  @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudentCourse(StudentCourse studentCourse);
 
   /**
