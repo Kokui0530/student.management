@@ -7,53 +7,87 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentsCourses;
+import raisetech.student.management.data.StudentCourse;
+
+/**
+ * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
+ */
 
 @Mapper
 public interface StudentRepository {
 
-  //studentsのリスト表示
+  /**
+   * 受講生の全件検索を行います。
+   *
+   * @return 受講生一覧(全件)
+   */
   @Select("SELECT * FROM students")
   List<Student> search();
 
-  //students単一表示
+  /**
+   * 受講生の検索を行います。
+   *
+   * @param id 　受講生ID
+   * @return 受講生
+   */
   @Select("SELECT * FROM students WHERE id= #{id}")
   Student searchStudent(String id);
 
-  //students_coursesのリスト表示
+  /**
+   * 受講生のコース情報の全件検索を行います。
+   *
+   * @return 受講生のコース情報(全件)
+   */
   @Select("SELECT * FROM students_courses")
-  List<Student> searchStudentsCoursesList();
+  List<StudentCourse> searchStudentCourseList();
 
-  //students_coursesの単一表示
+  /**
+   * 受講生IDに紐づく受講生コース情報を検索します。
+   *
+   * @param studentId 受講生ID
+   * @return 受講生IDに紐づく受講生のコース情報
+   */
   @Select("SELECT * FROM students_courses WHERE students_id= #{studentId}")
-  List<StudentsCourses> searchStudentsCourses(String studentId);
+  List<StudentCourse> searchStudentCourse(String studentId);
 
-
-  //studentの後に登録するカラム名を入れないと、登録されてるカラム数とVALUESの数が一致していないとエラーになる
-  //（テーブル名だけだと全件分という意味になる）
+  /**
+   * 受講生を新規登録します。IDに関しては自動採番を行う。
+   *
+   * @param student 受講生
+   */
   @Insert(
       "INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,isdeleted) "
           + "VALUES(#{name}, #{furigana}, #{nickname}, #{mail}, #{region}, #{age}, #{gender}, #{remark},false)")
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  //自動採番がIDだよって指定
-
+//自動採番がIDだよって指定
   void registerStudent(Student student);
 
+  /**
+   * 受講生コース情報を新規登録します。IDに関しては自動採番を行う。
+   *
+   * @param studentCourse 受講生コース情報
+   */
   @Insert(
       "INSERT INTO students_courses(students_Id ,courses_Name , start , end)" //SQLの登録と同じ名前にしないとNG
           + "VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})")  //ここで使う名前を記載してOK
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  void registerStudentsCourses(StudentsCourses studentsCourses);
+  void registerStudentCourse(StudentCourse studentCourse);
 
-  //受講生登録情報の更新
+  /**
+   * 受講生を更新します。
+   *
+   * @param student 受講生
+   */
   @Update(
       "UPDATE students SET name=#{name} , furigana=#{furigana} , nickname=#{nickname} , mail=#{mail} , region=#{region},"
           + "age=#{age},gender=#{gender},remark=#{remark},isdeleted=#{isDeleted} WHERE id=#{id}")
   void updateStudent(Student student);
 
-  //コース情報の更新
-  @Update(
-      "UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}")
-  void updateStudentCourses(StudentsCourses studentsCourses);
-
+  /**
+   * 受講生コース情報のコース名を更新します。
+   *
+   * @param studentCourse 受講生コース情報
+   */
+  @Update("UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}")
+  void updateStudentCourse(StudentCourse studentCourse);
 }
