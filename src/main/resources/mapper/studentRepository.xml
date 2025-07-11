@@ -35,5 +35,15 @@
     VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})
   </insert>
 
+  <!--受講生を更新-->
+  <update id="updateStudent">
+    UPDATE students SET name=#{name} , furigana=#{furigana} , nickname=#{nickname} , mail=#{mail} , region=#{region},
+    age=#{age} , gender=#{gender} , remark=#{remark} , isdeleted=#{isDeleted} WHERE id=#{id}
+  </update>
+
+  <!--受講生コース情報のコース名を更新-->
+  <update id="updateStudentCourse">
+    UPDATE students_Courses SET courses_Name = #{coursesName} WHERE id = #{id}
+  </update>
 
 </mapper>
