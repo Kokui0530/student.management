@@ -1,6 +1,7 @@
 package raisetech.student.management.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -39,6 +40,7 @@ public class StudentController {
    * @return 受講生詳細一覧（全件）
    */
   @Operation(summary = "一覧検索" , description = "受講生の一覧を検索します。")
+  @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
     return service.searchStudentList();
@@ -50,6 +52,9 @@ public class StudentController {
    * @param id 受講生ID
    * @return 受講生
    */
+  @Operation(summary = "ID検索" , description = "受講生IDをもとに受講生情報を検索します。")
+  @ApiResponse(responseCode = "200", description = "登録が完了しました。")
+
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(
       @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
@@ -62,7 +67,10 @@ public class StudentController {
    * @param studentDetail 受講生詳細
    * @return 実行結果
    */
+
+
   @Operation(summary = "受講生登録" , description = "受講生を登録します。")
+  @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
@@ -75,7 +83,8 @@ public class StudentController {
    * @param studentDetail 受講生詳細
    * @return 実行結果
    */
-
+  @Operation(summary = "受講生詳細更新" , description = "受講生の詳細情報を更新します。")
+  @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @PutMapping("/updateStudent") //更新内容を入力するところ
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
     service.updateStudent(studentDetail);

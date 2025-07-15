@@ -17,9 +17,11 @@ import raisetech.student.management.data.StudentCourse;
 @AllArgsConstructor  //全項目を設定するコンストラクター
 public class StudentDetail {
 
+  @Schema(description = "受講生詳細情報")
   @Valid
   private Student student;
 
+  @Schema(description = "受講生コース情報")
   @Valid
   private List<StudentCourse> studentCourseList;
 }
