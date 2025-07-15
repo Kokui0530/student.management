@@ -1,1 +1,2 @@
-rootProject.name = 'student.managment'
+rootProject.name = 'student.management'
+include ':student.management'
