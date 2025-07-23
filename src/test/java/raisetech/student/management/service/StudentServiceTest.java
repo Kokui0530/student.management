@@ -27,21 +27,39 @@ class StudentServiceTest {
   private StudentService sut;
 
   @BeforeEach
-  void before() {
+  void 事前準備() {
     sut = new StudentService(repository, converter);
+    //テストメソッドの都度新しく作ってくれる、共通してやりたいこと
+    //StudentService sut = new StudentService(repository,converter);　を毎回書かなくてもよくなる！
   }
 
-  @Test
+  @Test  //searchStudentList
   void 受講生詳細の一覧検索_リポジトリとコンバータの処理が適切に呼び出せていること() {
-    List<Student> studentList = new ArrayList<>();
-    List<StudentCourse> studentCourseList = new ArrayList<>();
-    Mockito.when(repository.search()).thenReturn(studentList);
+    List<Student> studentList = new ArrayList<>(); //空のstudentListを生成
+    List<StudentCourse> studentCourseList = new ArrayList<>();  //空のstudentCourseListを生成
+    Mockito.when(repository.search()).thenReturn(studentList); //repositoryのsearchを呼び出したら、studentListを返すよって処理
     Mockito.when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
+    //repositoryのsearchStudentCourseListを呼び出したら、studentCourseListを返すよって処理
 
     sut.searchStudentList();
 
-    verify(repository, times(1)).search();
+    verify(repository, times(1)).search(); //repositoryのsearchを1回ちゃんと呼び出せてるか確認
     verify(repository, times(1)).searchStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
+  }
+
+  @Test  //searchStudent
+  void 受講生詳細の検索_リポジトリの処理が適切に呼び出せていること(){
+
+  }
+
+  @Test  //registerStudent
+  void 受講生詳細の登録_リポジトリの処理が適切に行えていること(){
+
+  }
+
+  @Test //updateStudent
+  void 受講生詳細の更新_リポジトリの処理が適切に行えていること(){
+
   }
 }
