@@ -1,7 +1,10 @@
 package raisetech.student.management.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -54,9 +57,8 @@ class StudentServiceTest {
   void 受講生詳細の検索_リポジトリの処理が適切に呼び出せていること(){
 
     String id = "2";
-    String getId ="4";
-
     Student student = new Student();
+    student.setId(id);
     List<StudentCourse> studentCourse = new ArrayList<>();
 
     Mockito.when(repository.searchStudent(id)).thenReturn(student);
@@ -68,16 +70,52 @@ class StudentServiceTest {
     verify(repository,times(1)).searchStudent(id);
     verify(repository,times(1)).searchStudentCourse(student.getId());
 
-    Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
+    assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
 
   @Test  //registerStudent
   void 受講生詳細の登録_リポジトリの処理が適切に行えていること(){
+    Student student = new Student();
+    StudentCourse course1 = new StudentCourse(); //for文でループしている為、複数回テストさせる為コースを２つ
+    StudentCourse course2 = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(course1,course2);
+
+    StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
+
+    sut.registerStudent(studentDetail);
+
+    verify(repository,times(1)).registerStudent(student);
+    verify(repository,times(1)).registerStudentCourse(course1);
+
+  }
+  @Test //initStudentsCourse
+  void 受講生詳細の登録_初期化処理が行われること(){
+    String id = "100";
+    Student student = new Student();
+    student.setId(id);
+    StudentCourse studentCourse = new StudentCourse();
+
+    sut.initStudentsCourse(studentCourse,student.getId());
+
+    assertEquals(id , studentCourse.getStudentsId());
+    assertEquals(LocalDateTime.now().getHour(),studentCourse.getStart().getHour());
+    assertEquals(LocalDateTime.now().plusYears(1).getYear(),studentCourse.getEnd().getYear());
 
   }
 
   @Test //updateStudent
   void 受講生詳細の更新_リポジトリの処理が適切に行えていること(){
+    Student student = new Student();
+    StudentCourse course1 = new StudentCourse();
+    StudentCourse course2 = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(course1,course2);
+
+    StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
+
+    sut.updateStudent(studentDetail);
+
+    verify(repository,times(1)).updateStudent(student);
+    verify(repository,times(1)).updateStudentCourse(course1);
 
   }
 }
