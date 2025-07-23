@@ -3,6 +3,7 @@ package raisetech.student.management.data;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ import lombok.Setter;
 @Setter
 public class Student {
 
+ @NotBlank
+ @Pattern(regexp = "^\\d+$" , message = "数値のみを入力してください。")
  @Schema(description = "ID、自動採番", example = "2")
   private String id;
 
