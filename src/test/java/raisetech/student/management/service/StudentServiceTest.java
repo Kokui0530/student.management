@@ -4,6 +4,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.repository.StudentRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,6 +53,22 @@ class StudentServiceTest {
   @Test  //searchStudent
   void 受講生詳細の検索_リポジトリの処理が適切に呼び出せていること(){
 
+    String id = "2";
+    String getId ="4";
+
+    Student student = new Student();
+    List<StudentCourse> studentCourse = new ArrayList<>();
+
+    Mockito.when(repository.searchStudent(id)).thenReturn(student);
+    Mockito.when(repository.searchStudentCourse(student.getId())).thenReturn(studentCourse);
+
+    StudentDetail expected = new StudentDetail(student,studentCourse);
+    StudentDetail actual =  sut.searchStudent(id);
+
+    verify(repository,times(1)).searchStudent(id);
+    verify(repository,times(1)).searchStudentCourse(student.getId());
+
+    Assertions.assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
 
   @Test  //registerStudent
