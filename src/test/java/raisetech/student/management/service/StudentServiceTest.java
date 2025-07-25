@@ -3,11 +3,9 @@ package raisetech.student.management.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,15 +60,15 @@ class StudentServiceTest {
     List<StudentCourse> studentCourse = new ArrayList<>();
 
     Mockito.when(repository.searchStudent(id)).thenReturn(student);
-    Mockito.when(repository.searchStudentCourse(student.getId())).thenReturn(studentCourse);
+    Mockito.when(repository.searchStudentCourse(id)).thenReturn(studentCourse);
 
     StudentDetail expected = new StudentDetail(student,studentCourse);
     StudentDetail actual =  sut.searchStudent(id);
 
     verify(repository,times(1)).searchStudent(id);
-    verify(repository,times(1)).searchStudentCourse(student.getId());
+    verify(repository,times(1)).searchStudentCourse(id);
 
-    assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
+    assertEquals(expected , actual);
   }
 
   @Test  //registerStudent
