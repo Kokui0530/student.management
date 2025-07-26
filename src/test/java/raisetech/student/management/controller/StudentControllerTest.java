@@ -11,7 +11,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,26 +19,47 @@ import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.service.StudentService;
 
-@WebMvcTest(StudentController.class)
-class StudentControllerTest {
+@WebMvcTest(StudentController.class) //テスト対象のクラスを入れる
+class StudentControllerTest {  //これでテスト用のスプリングブートが立ち上がる
 
   @Autowired
-  private MockMvc mockMvc;
+  private MockMvc mockMvc;  //お作法、
 
   @MockitoBean
-  private StudentService service;
+  private StudentService service;  //サービスとかとはモック化のやり方が違う
 
   private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+  //入力チェックに必要なvalidatorが取れる
 
-  @Test
+  @Test //@GetMapping("/studentList")
   void 受講生詳細一覧検索が実行できて空のリストが返ってくること() throws Exception {
-    mockMvc.perform(get("/studentList"))
+    mockMvc.perform(get("/studentList"))  //getメソッドの検証
         .andExpect(status().isOk());
+        //.andExpect(content().json("[]")); どんな内容で返ってくるか検証
+         //json　レスポンスの中身は〇〇になってるよってエラーのBodyの所を見ると書いてある
 
     verify(service, times(1)).searchStudentList();
   }
 
-  @Test
+  @Test //@GetMapping("/student/{id}")
+  void 受講生詳細検索_idに紐づく受講生情報を取得できていること(){
+
+
+  }
+
+  @Test //@PostMapping("/registerStudent")
+  void それぞれの項目の新規登録が出来ていること(){
+
+  }
+
+
+
+  @Test //@PutMapping("/updateStudent")
+  void 受講生詳細の更新または論理削除が行えていること(){
+
+  }
+
+  @Test //入力チェック　エラーが出ないチェック
   void 受講生詳細の受講生で適切な値を入力した時に入力チェックに異常が発生しない事(){
     Student student = new Student();
     student.setId("1");
@@ -53,11 +73,12 @@ class StudentControllerTest {
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
     assertThat(violations.size()).isEqualTo(0);
+    //エラーが何個発生してるかをisEqualToに記載(今回はエラーが出ない事の検証なので０)
 
   }
 
 
-  @Test
+  @Test //入力チェック　エラーになるかチェック
   void 受講生詳細の受講生IDに数字以外を用いた時に入力チェックに掛かること(){
     Student student = new Student();
     student.setId("テストです");
@@ -72,7 +93,7 @@ class StudentControllerTest {
 
     assertThat(violations.size()).isEqualTo(1);
     assertThat(violations).extracting("message").containsOnly("数値のみを入力してください。");
-
+    //extracting → violationsは複数のものを持ってるので対象のフィールド名を指定して内容を書く
   }
 
 }
