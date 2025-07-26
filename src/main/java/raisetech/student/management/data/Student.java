@@ -11,7 +11,7 @@ import lombok.Setter;
 @Schema(description = "受講生情報")
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})  //比較する際idだけをみる
+@EqualsAndHashCode //equals() メソッドをオーバーライド
 public class Student {
 
  @NotBlank

@@ -16,7 +16,7 @@ import raisetech.student.management.data.StudentCourse;
 @Setter
 @NoArgsConstructor //引数を使わないコンストラクター
 @AllArgsConstructor  //全項目を設定するコンストラクター
-@EqualsAndHashCode(of = {"student"}) //比較する際studentだけをみる
+@EqualsAndHashCode //equals() メソッドをオーバーライド
 public class StudentDetail {
 
   @Schema(description = "受講生詳細情報")
