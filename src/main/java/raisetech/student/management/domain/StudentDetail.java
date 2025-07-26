@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import raisetech.student.management.data.StudentCourse;
 @Setter
 @NoArgsConstructor //引数を使わないコンストラクター
 @AllArgsConstructor  //全項目を設定するコンストラクター
+@EqualsAndHashCode(of = {"student"}) //比較する際studentだけをみる
 public class StudentDetail {
 
   @Schema(description = "受講生詳細情報")
