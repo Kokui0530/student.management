@@ -2,14 +2,23 @@ package raisetech.student.management.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +26,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.service.StudentService;
 
 @WebMvcTest(StudentController.class) //テスト対象のクラスを入れる
@@ -42,17 +53,18 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
   }
 
   @Test //@GetMapping("/student/{id}")
-  void 受講生詳細検索_idに紐づく受講生情報を取得できていること(){
+  void 受講生詳細検索_idに紐づく受講生情報を取得できていること() throws Exception {
+    String id = "99";
+    mockMvc.perform(get("/student/{id}", id))
+        .andExpect(status().isOk());
 
-
+    verify(service, times(1)).searchStudent(id);
   }
 
-  @Test //@PostMapping("/registerStudent")
-  void それぞれの項目の新規登録が出来ていること(){
+  @Test//@PostMapping("/registerStudent")
+  void それぞれの項目の新規登録が出来ていること() throws Exception {
 
   }
-
-
 
   @Test //@PutMapping("/updateStudent")
   void 受講生詳細の更新または論理削除が行えていること(){
