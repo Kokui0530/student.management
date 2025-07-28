@@ -14,7 +14,7 @@ import lombok.Setter;
 @EqualsAndHashCode //equals() メソッドをオーバーライド
 public class Student {
 
- @NotBlank
+
  @Pattern(regexp = "^\\d+$" , message = "数値のみを入力してください。")
  @Schema(description = "ID、自動採番", example = "2")
   private String id;
