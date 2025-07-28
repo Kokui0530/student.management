@@ -1,33 +1,25 @@
 package raisetech.student.management.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.student.management.data.Student;
-import raisetech.student.management.data.StudentCourse;
-import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.service.StudentService;
 
 @WebMvcTest(StudentController.class) //テスト対象のクラスを入れる
@@ -62,9 +54,35 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
   }
 
   @Test//@PostMapping("/registerStudent")
-  void それぞれの項目の新規登録が出来ていること() throws Exception {
+  void 受講生詳細の登録が実行出来て空で返ってくること() throws Exception {
+    //リクエストデータは適切に構築して入力チェックの検証も兼ねている
+    //本来であれば登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない
+    mockMvc.perform(post("/registerStudent").contentType(MediaType.APPLICATION_JSON).content(
+            """
+                {
+                "student":{
+                    "name" : "林田耕太",
+                    "furigana" : "ハヤシダコウタ",
+                    "nickname" : "はやしだ",
+                    "mail" : "hayasida@gmail.com",
+                    "region" : "草加市",
+                    "gender" : "男",
+                    "remark" : ""
+                    },
+                    "studentCourseList" : [
+                    {
+                    "coursesName" : "javaコース"
+                    }
+                    ]
+                    }
+                """
+        ))
+        .andExpect(status().isCreated())
+        .andDo(print());
+    verify(service, times(1)).registerStudent(any());
 
   }
+
 
   @Test //@PutMapping("/updateStudent")
   void 受講生詳細の更新または論理削除が行えていること(){
