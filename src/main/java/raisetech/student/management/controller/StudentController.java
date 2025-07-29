@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +71,7 @@ public class StudentController {
 
 
   @Operation(summary = "受講生登録" , description = "受講生を登録します。")
-  @ApiResponse(responseCode = "201",description = "登録が完了しました。")
+  @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
@@ -90,4 +91,12 @@ public class StudentController {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新が成功しました");
   }
+
+  @GetMapping("/exception")
+  public ResponseEntity<String> exceptionApi() {
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body("このAPIは現在利用できません。古いURLとなっています。");
+  }
+
 }
