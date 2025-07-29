@@ -6,7 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import jakarta.validation.ConstraintViolation;
@@ -77,16 +78,51 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
                     }
                 """
         ))
-        .andExpect(status().isCreated())
-        .andDo(print());
+        .andExpect(status().isOk());
     verify(service, times(1)).registerStudent(any());
 
   }
 
 
   @Test //@PutMapping("/updateStudent")
-  void 受講生詳細の更新または論理削除が行えていること(){
+  void 受講生詳細の更新または論理削除が実行できること() throws Exception{
+mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
+    """
+        {
+                "student": {
+                    "id": "2",
+                    "name": "佐藤健",
+                    "furigana": "サトウケン",
+                    "nickname": "けんけん",
+                    "mail": "sato.ken@example.com",
+                    "region": "東京都新宿区",
+                    "age": 35,
+                    "gender": "男",
+                    "remark": "",
+                    "deleted": false
+                },
+                "studentCourseList": [
+                    {
+                        "id": "4",
+                        "studentsId": "2",
+                        "coursesName": "Javaコース",
+                        "start": "2025-06-10T00:00:00",
+                        "end": "2025-09-10T00:00:00"
+                    }
+                ]
+            }
+        """
+))
+    .andExpect(status().isOk());
+verify(service,times(1)).updateStudent(any());
 
+  }
+
+  @Test
+  void 受講生詳細の例外APIが実行できてステータスが400で返ってくること()throws Exception{
+    mockMvc.perform(get("/exception"))
+        .andExpect(status().is4xxClientError())
+        .andExpect(content().string("このAPIは現在利用できません。古いURLとなっています。"));
   }
 
   @Test //入力チェック　エラーが出ないチェック
