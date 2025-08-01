@@ -66,8 +66,8 @@ class StudentConverterTest {
     studentCourse.setId("1");
     studentCourse.setStudentsId("1");
     studentCourse.setCoursesName("Javaコース");
-    studentCourse.setStart(LocalDateTime.now());
-    studentCourse.setEnd(LocalDateTime.now().plusYears(1));
+    studentCourse.setStartDate(LocalDateTime.now());
+    studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
 
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -94,10 +94,10 @@ class StudentConverterTest {
 
     StudentCourse studentCourse = new StudentCourse();
     studentCourse.setId("1");
-    studentCourse.setStudentsId("1");
+    studentCourse.setStudentsId("2");
     studentCourse.setCoursesName("Javaコース");
-    studentCourse.setStart(LocalDateTime.now());
-    studentCourse.setEnd(LocalDateTime.now().plusYears(1));
+    studentCourse.setStartDate(LocalDateTime.now());
+    studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
 
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -105,7 +105,7 @@ class StudentConverterTest {
     List<StudentDetail> actual = sut.convertStudentDetails(studentList,studentCourseList);
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
-    assertThat(actual.get(0).getStudentCourseList()).isEmpty();
+    assertThat(actual.get(0).getStudentCourseList()).isEmpty(); //studentIdが紐づかない場合はコースは空
   }
 
 }

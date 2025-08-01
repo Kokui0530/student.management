@@ -23,9 +23,9 @@ public class StudentCourse {
   private String coursesName;
 
   @Schema(description = "受講開始日" , example = "2024.09.01")
-  private LocalDateTime start;
+  private LocalDateTime startDate;
 
   @Schema(description = "受講終了日" , example = "2025.09.01")
-  private LocalDateTime end;
+  private LocalDateTime endDate;
 
 }

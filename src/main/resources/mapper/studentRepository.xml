@@ -31,8 +31,8 @@
 
   <!--受講生コース情報を新規登録 -->
   <insert id="registerStudentCourse" useGeneratedKeys = "true" keyProperty = "id">
-    INSERT INTO students_courses(students_id ,courses_Name , start , end)
-    VALUES(#{studentsId} , #{coursesName} , #{start} , #{end})
+    INSERT INTO students_courses(students_id ,courses_Name , start_date , end_date)
+    VALUES(#{studentsId} , #{coursesName} , #{startDate} , #{endDate})
   </insert>
 
   <!--受講生を更新-->
