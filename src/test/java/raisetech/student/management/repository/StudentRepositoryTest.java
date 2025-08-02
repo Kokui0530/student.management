@@ -80,7 +80,9 @@ class StudentRepositoryTest {
 
   @Test //updateStudent
   void 受講生詳細の更新が行えること(){
+    String id = "1";
     Student student = new Student();
+    student.setId(id);
     student.setName("山田太郎");
     student.setFurigana("やまだたろう");
     student.setNickname("タロー");
@@ -92,25 +94,48 @@ class StudentRepositoryTest {
     student.setDeleted(false);
 
     sut.updateStudent(student);
-    List<Student> actual = sut.search();
+    Student actual = sut.searchStudent(id);
 
-    assertThat(actual.size()).isEqualTo(5);
-
+    assertThat(actual).isEqualTo(student);
   }
 
   @Test //updateStudentCourse
   void 受講生コース情報の更新が行えること(){
-    StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setStudentsId("1");
-    studentCourse.setCoursesName("Javaコース");
-    studentCourse.setStartDate(LocalDateTime.now());
-    studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
+    String studentId = "1";
+    StudentCourse expected = new StudentCourse();
+    expected.setId("1");
+    expected.setStudentsId(studentId);
+    expected.setCoursesName("Javaコース");
+    expected.setStartDate(LocalDateTime.of(2024,4,1,1,0));
+    expected.setEndDate(LocalDateTime.of(2024,6,30,15,0));
 
-    sut.updateStudentCourse(studentCourse);
-    List<StudentCourse> actual = sut.searchStudentCourseList();
+    //実行
+    sut.updateStudentCourse(expected);
 
-    assertThat(actual.size()).isEqualTo(10);
+    StudentCourse actual = sut.searchStudentCourse(studentId).get(0);
 
+    assertThat(expected.getStudentsId()).isEqualTo(actual.getStudentsId());
+    assertThat(expected.getCoursesName()).isEqualTo(actual.getCoursesName());
+    //assertThat(actual).isEqualTo(student)　だとダメな理由
+    //コース情報はLocalDateTime.nowを使っていて、ミリ単位で変わってくるから、中身が完全に一致しない
+    //だから、それぞれの要素を比較すればOK
   }
+
+  @Test  //異常系
+  void IDに紐づく受講生検索で存在しないIDの場合はNullを返すこと(){
+    Student actual = sut.searchStudent("5555");
+    assertThat(actual).isNull();
+  }
+
+
+  @Test  //searchStudentCourse
+  void IDに紐づく受講生コース情報の検索で存在しないIDの場合空のリストを返す(){
+     String studentId = "5555";
+    List<StudentCourse> actual = sut.searchStudentCourse(studentId);
+    assertThat(actual).hasSize(0);
+    //ID 1 に対して紐づくコース情報は2件
+  }
+
+
 
 }
