@@ -3,12 +3,14 @@ package raisetech.student.management.data;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Schema(description = "受講生コース情報")
 @Getter
 @Setter
+@EqualsAndHashCode
 
 public class StudentCourse {
 
@@ -23,9 +25,9 @@ public class StudentCourse {
   private String coursesName;
 
   @Schema(description = "受講開始日" , example = "2024.09.01")
-  private LocalDateTime start;
+  private LocalDateTime startDate;
 
   @Schema(description = "受講終了日" , example = "2025.09.01")
-  private LocalDateTime end;
+  private LocalDateTime endDate;
 
 }

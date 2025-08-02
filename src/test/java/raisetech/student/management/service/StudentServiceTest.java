@@ -96,24 +96,23 @@ class StudentServiceTest {
     sut.initStudentsCourse(studentCourse,student.getId());
 
     assertEquals(id , studentCourse.getStudentsId());
-    assertEquals(LocalDateTime.now().getHour(),studentCourse.getStart().getHour());
-    assertEquals(LocalDateTime.now().plusYears(1).getYear(),studentCourse.getEnd().getYear());
+    assertEquals(LocalDateTime.now().getHour(),studentCourse.getStartDate().getHour());
+    assertEquals(LocalDateTime.now().plusYears(1).getYear(),studentCourse.getEndDate().getYear());
 
   }
 
   @Test //updateStudent
   void 受講生詳細の更新_リポジトリの処理が適切に行えていること(){
     Student student = new Student();
-    StudentCourse course1 = new StudentCourse();
-    StudentCourse course2 = new StudentCourse();
-    List<StudentCourse> studentCourseList = List.of(course1,course2);
+    StudentCourse course = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(course);
 
     StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
 
     sut.updateStudent(studentDetail);
 
     verify(repository,times(1)).updateStudent(student);
-    verify(repository,times(1)).updateStudentCourse(course1);
+    verify(repository,times(1)).updateStudentCourse(course);
 
   }
 }

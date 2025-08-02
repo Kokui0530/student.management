@@ -5,7 +5,7 @@ INSERT INTO students (name, furigana, nickname, mail, region, age, gender) VALUE
 ('田中 美咲', 'たなか みさき', 'みーちゃん', 'misaki.tanaka@example.com', '長崎', 30, '女性'),
 ('高橋 健', 'たかはし けん', 'けんちゃん', 'ken.takahashi@example.com', '福岡', 27, '男性');
 
-INSERT INTO students_courses (students_id, courses_name, start, end_date) VALUES
+INSERT INTO students_courses (students_id, courses_name, start_date, end_date) VALUES
 (1, 'Java入門',         '2024-04-01 10:00:00', '2024-06-30 15:00:00'),
 (1, 'SQL基礎',          '2024-07-01 09:00:00', '2024-07-31 12:00:00'),
 (2, 'JavaScript入門',   '2024-04-15 14:00:00', '2024-06-15 17:00:00'),
