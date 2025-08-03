@@ -18,7 +18,7 @@ public class StudentAppStatus {
   private int id;
 
   @Schema(description = "受講生コースID" , example = "8")
-  private String studentCourseId;
+  private int studentCourseId;
 
   @Schema(description = "ステータス" , example = "本申し込み")
   @NotBlank(message = "必須項目です。")
