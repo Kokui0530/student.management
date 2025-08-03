@@ -17,8 +17,8 @@ public class StudentAppStatus {
   @Schema(description = "ID、自動採番", example = "2")
   private int id;
 
-  @Schema(description = "受講生ID" , example = "8")
-  private String studentsId;
+  @Schema(description = "受講生コースID" , example = "8")
+  private String studentCourseId;
 
   @Schema(description = "ステータス" , example = "本申し込み")
   @NotBlank(message = "必須項目です。")

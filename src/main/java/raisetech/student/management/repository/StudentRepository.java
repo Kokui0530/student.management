@@ -74,8 +74,8 @@ public interface StudentRepository {
   // 全件検索
   List<StudentAppStatus> searchStatus();
 
-  //受講生IDに紐づく受講生申し込み状況の検索
-  StudentAppStatus searchStudentStatus(String StudentId);
+  //受講生コースIDに紐づく受講生申し込み状況の検索
+  StudentAppStatus searchStudentStatus(String StudentCourseId);
 
   //statusごとの検索
   StudentAppStatus searchStudentAppstatus(String status);
