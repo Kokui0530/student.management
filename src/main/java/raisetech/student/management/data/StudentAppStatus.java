@@ -26,4 +26,5 @@ public class StudentAppStatus {
   //仮申し込み、本申し込み、受講中、受講終了　の４つ
 
 
+
 }
