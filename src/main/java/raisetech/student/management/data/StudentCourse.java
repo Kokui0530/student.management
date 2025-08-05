@@ -1,11 +1,13 @@
 package raisetech.student.management.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import raisetech.student.management.validation.Update;
 
 @Schema(description = "受講生コース情報")
 @Getter
@@ -14,9 +16,11 @@ import lombok.Setter;
 
 public class StudentCourse {
 
+  @Min(value = 1, message = "IDは1以上", groups = Update.class)
   @Schema(description = "ID、自動採番", example = "2")
   private int id;
 
+  @Min(value = 1, message = "IDは1以上", groups = Update.class)
   @Schema(description = "受講生ID" , example = "5")
   private int studentsId;
 

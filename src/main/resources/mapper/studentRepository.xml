@@ -53,23 +53,23 @@
 
   <!--受講生IDに紐づく受講生申し込み状況の検索-->
   <select id="searchStudentStatus" resultType="raisetech.student.management.data.StudentAppStatus">
-    SELECT * FROM students_status WHERE student_course_id= #{studentCourseId}
+    SELECT * FROM student_appstatus WHERE student_course_id= #{studentCourseId}
   </select>
 
   <!--statusごとの検索-->
   <select id="searchStudentAppStatus" resultType="raisetech.student.management.data.StudentAppStatus">
-    SELECT * FROM students_status WHERE status= #{"status"}
+    SELECT * FROM student_appstatus WHERE status= #{"status"}
   </select>
 
   <!--受講生申し込み状況を新規登録 -->
   <insert id="registerStudentAppStatus" useGeneratedKeys = "true" keyProperty = "id">
-    INSERT INTO students_status(student_course_id , status)
+    INSERT INTO students_appstatus(student_course_id , status)
     VALUES(#{studentsCourseId}, #{staus})
   </insert>
 
   <!--申し込み状況を更新-->
   <update id="updateStudentAppStatus">
-    UPDATE students_status SET status = #{status} WHERE id = #{id}
+    UPDATE students_appstatus SET status = #{status} WHERE id = #{id}
   </update>
 
 
