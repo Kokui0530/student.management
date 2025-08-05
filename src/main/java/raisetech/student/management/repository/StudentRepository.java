@@ -26,7 +26,7 @@ public interface StudentRepository {
    * @param id 　受講生ID
    * @return 受講生
    */
-  Student searchStudent(String id);
+  Student searchStudent(int id);
 
   /**
    * 受講生のコース情報の全件検索を行います。
@@ -41,7 +41,7 @@ public interface StudentRepository {
    * @param studentId 受講生ID
    * @return 受講生IDに紐づく受講生のコース情報
    */
-  List<StudentCourse> searchStudentCourse(String studentId);
+  List<StudentCourse> searchStudentCourse(int studentId);
 
   /**
    * 受講生を新規登録します。IDに関しては自動採番を行う。
@@ -75,7 +75,7 @@ public interface StudentRepository {
   List<StudentAppStatus> searchStatus();
 
   //受講生コースIDに紐づく受講生申し込み状況の検索
-  StudentAppStatus searchStudentStatus(String StudentCourseId);
+  StudentAppStatus searchStudentStatus(int StudentCourseId);
 
   //statusごとの検索
   StudentAppStatus searchStudentAppstatus(String status);

@@ -15,10 +15,10 @@ import lombok.Setter;
 public class StudentCourse {
 
   @Schema(description = "ID、自動採番", example = "2")
-  private String id;
+  private int id;
 
   @Schema(description = "受講生ID" , example = "5")
-  private String studentsId;
+  private int studentsId;
 
   @Schema(description = "コース名" , example = "Javaコース")
   @NotBlank(message = "必須項目です。")
@@ -30,4 +30,6 @@ public class StudentCourse {
   @Schema(description = "受講終了日" , example = "2025.09.01")
   private LocalDateTime endDate;
 
+  @Schema(description = "申し込み状況" , example = "受講中")
+  private StudentAppStatus status;
 }

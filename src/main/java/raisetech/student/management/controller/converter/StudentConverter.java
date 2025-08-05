@@ -1,10 +1,13 @@
 package raisetech.student.management.controller.converter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
 import raisetech.student.management.domain.StudentDetail;
 
@@ -23,7 +26,7 @@ public class StudentConverter {
    * @return 受講生詳細情報のリスト
    */
 
-
+  //受講生情報とコース情報を紐づけ
   public List<StudentDetail> convertStudentDetails(List<Student> studentList,
       List<StudentCourse> studentCourseList) {
     List<StudentDetail> studentDetails = new ArrayList<>();
@@ -31,7 +34,7 @@ public class StudentConverter {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
       List<StudentCourse> convertStudentCourseList = studentCourseList.stream()
-          .filter(studentCourses -> student.getId().equals(studentCourses.getStudentsId()))
+          .filter(studentCourses -> student.getId() == studentCourses.getStudentsId())
           .collect(Collectors.toList());
 
       studentDetail.setStudentCourseList(convertStudentCourseList);
@@ -39,4 +42,21 @@ public class StudentConverter {
     });
     return studentDetails;
   }
-}
+  public List<StudentDetail> convertCourseStatusList (List<StudentDetail> studentDetails,
+      List<StudentAppStatus> studentAppStatusList){
+  //コース情報と申し込み情報の紐づけ
+    Map<Integer,StudentAppStatus> studentAppStatusMap = new HashMap<>();
+    for(StudentAppStatus studentAppstatus : studentAppStatusList){
+      studentAppStatusMap.put(studentAppstatus.getStudentCourseId(),studentAppstatus);
+    }
+
+    for (StudentDetail studentDetail : studentDetails){
+      for (StudentCourse studentCourse : studentDetail.getStudentCourseList()){
+        StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
+        studentCourse.setStatus(studentAppStatus);
+      }
+    }
+  return studentDetails;
+  }
+  }
+

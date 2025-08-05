@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.repository.StudentRepository;
@@ -35,7 +36,11 @@ public class StudentService {
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-    return converter.convertStudentDetails(studentList, studentCourseList);
+    List<StudentAppStatus> studentAppStatusList = repository.searchStatus();
+    //受講生情報とコース情報を紐づけ
+    List<StudentDetail>studentDetails = converter.convertStudentDetails(studentList,studentCourseList);
+    //コース情報に申し込み状況を紐づけ
+    return converter.convertCourseStatusList(studentDetails,studentAppStatusList);
   }
 
   /**
@@ -45,10 +50,15 @@ public class StudentService {
    * @return 受講生詳細
    */
 
-  public StudentDetail searchStudent(String id) {
+  public StudentDetail searchStudent(int id) {
     Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
-    return new StudentDetail(student, studentCourse);
+    List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
+    //コースIDを取得して、コースに対して申し込み状況を紐づけしてコースにセットする
+    for (StudentCourse studentCourse : studentCourseList){
+      StudentAppStatus studentAppStatus = repository.searchStudentStatus(studentCourse.getId());
+      studentCourse.setStatus(studentAppStatus);
+    }
+    return new StudentDetail(student, studentCourseList);
   }
 
   /**
@@ -77,7 +87,7 @@ public class StudentService {
    * @param studentCourses 受講生コース情報
    * @param id       受講生
    */
-  void initStudentsCourse(StudentCourse studentCourses, String id) {
+  void initStudentsCourse(StudentCourse studentCourses, int id) {
     LocalDateTime now = LocalDateTime.now();
 
     studentCourses.setStudentsId(id);
