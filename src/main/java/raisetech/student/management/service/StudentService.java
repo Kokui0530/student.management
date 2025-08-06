@@ -44,7 +44,9 @@ public class StudentService {
   }
 
   /**
-   * 受講生詳細検索です。 IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して設定します。
+   * 受講生詳細検索です。
+   * IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して
+   * 更に受講生コース情報に紐づく受講生申し込み情報を設定します。
    *
    * @param id 　受講生ID
    * @return 受講生詳細
@@ -62,7 +64,9 @@ public class StudentService {
   }
 
   /**
-   * 受講生詳細の登録を行います。 受講生と受講生コース情報を個別に登録し、受講生コース情報には受講生情報を紐づける値やコース開始日、コース終了日を設定します。
+   * 受講生詳細の登録を行います。
+   * 受講生と受講生コース情報と申し込み情報を個別に登録し、受講生コース情報には受講生情報を紐づける値やコース開始日、コース終了日を設定します。
+   * 受講生申し込み情報には受講生コース情報を紐づける値を設定します。
    *
    * @param studentDetail 受講生詳細
    * @return 登録を付与した受講生詳細
@@ -72,17 +76,18 @@ public class StudentService {
   //Transactional -> 複数の処理を一つのまとまりとして扱う仕組みのこと
   public StudentDetail registerStudent(StudentDetail studentDetail) {
     Student student = studentDetail.getStudent();
-
     repository.registerStudent(student);
-    studentDetail.getStudentCourseList().forEach(studentCourse -> {
+    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
       initStudentsCourse(studentCourse, student.getId());
       repository.registerStudentCourse(studentCourse);
-    });
+      linkCourseToStatus(studentCourse.getStatus(), studentCourse.getId());
+      repository.registerStudentAppStatus(studentCourse.getStatus());
+      }
     return studentDetail;
   }
 
   /**
-   * 受講生コース情報を登録する際の初期情報を設定する。
+   * 受講生コース情報を登録する際の初期情報を設定します。
    *
    * @param studentCourses 受講生コース情報
    * @param id       受講生
@@ -95,6 +100,16 @@ public class StudentService {
     studentCourses.setEndDate(now.plusYears(1));
   }
 
+  /***
+   * 受講生申し込み情報を登録する際の受講生コースIDを設定します。
+   *
+   * @param studentAppStatus 受講生申し込み情報
+   * @param id　受講生
+   */
+  void linkCourseToStatus(StudentAppStatus studentAppStatus , int id) {
+    studentAppStatus.setStudentCourseId(id);
+  }
+
   /**
    * 受講生詳細の更新を行います。 受講生と受講生コース情報をそれぞれ更新します。
    *
@@ -103,7 +118,9 @@ public class StudentService {
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
-    studentDetail.getStudentCourseList()
-        .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
+    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+      repository.updateStudentCourse(studentCourse);
+      repository.updateStudentAppStatus(studentCourse.getStatus());
+    }
   }
 }

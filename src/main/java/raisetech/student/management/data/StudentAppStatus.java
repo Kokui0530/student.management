@@ -23,9 +23,8 @@ public class StudentAppStatus {
   private int studentCourseId;
 
   @Schema(description = "ステータス" , example = "本申し込み")
-  @NotBlank(message = "必須項目です。")
+  @NotBlank(message = "必須項目です。仮申し込み、本申し込み、受講中、受講終了からお選びください")
   private String status;
-  //仮申し込み、本申し込み、受講中、受講終了　の４つ
 
 
 

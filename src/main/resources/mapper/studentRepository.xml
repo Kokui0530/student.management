@@ -63,13 +63,13 @@
 
   <!--受講生申し込み状況を新規登録 -->
   <insert id="registerStudentAppStatus" useGeneratedKeys = "true" keyProperty = "id">
-    INSERT INTO students_appstatus(student_course_id , status)
-    VALUES(#{studentsCourseId}, #{staus})
+    INSERT INTO student_appstatus(student_course_id , status)
+    VALUES(#{studentCourseId}, #{status})
   </insert>
 
   <!--申し込み状況を更新-->
   <update id="updateStudentAppStatus">
-    UPDATE students_appstatus SET status = #{status} WHERE id = #{id}
+    UPDATE student_appstatus SET status = #{status} WHERE student_course_id = #{studentCourseId}
   </update>
 
 
