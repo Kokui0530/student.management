@@ -24,8 +24,8 @@ class StudentRepositoryTest {
 
   @Test  //searchStudent
   void IDに紐づく受講生詳細の検索(){
-    Student actual = sut.searchStudent("1");
-    assertThat(actual.getId()).isEqualTo("1"); //IDが同じ受講生が取れてくる
+    Student actual = sut.searchStudent(1);
+    assertThat(actual.getId()).isEqualTo(1); //IDが同じ受講生が取れてくる
   }
 
   @Test //searchStudentCourseList
@@ -37,7 +37,7 @@ class StudentRepositoryTest {
   @Test  //searchStudentCourse
   void IDに紐づく受講生コース情報の検索(){
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     List<StudentCourse> actual = sut.searchStudentCourse(student.getId());
     assertThat(actual.size()).isEqualTo(2);
     //ID 1 に対して紐づくコース情報は2件
@@ -66,7 +66,7 @@ class StudentRepositoryTest {
   @Test //registerStudentCourse
   void 受講生コース情報の登録が行えること(){
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setStudentsId("1");
+    studentCourse.setStudentsId(1);
     studentCourse.setCoursesName("Javaコース");
     studentCourse.setStartDate(LocalDateTime.now());
     studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
@@ -80,7 +80,7 @@ class StudentRepositoryTest {
 
   @Test //updateStudent
   void 受講生詳細の更新が行えること(){
-    String id = "1";
+    int id = 1;
     Student student = new Student();
     student.setId(id);
     student.setName("山田太郎");
@@ -101,9 +101,9 @@ class StudentRepositoryTest {
 
   @Test //updateStudentCourse
   void 受講生コース情報の更新が行えること(){
-    String studentId = "1";
+    int studentId = 1;
     StudentCourse expected = new StudentCourse();
-    expected.setId("1");
+    expected.setId(1);
     expected.setStudentsId(studentId);
     expected.setCoursesName("Javaコース");
     expected.setStartDate(LocalDateTime.of(2024,4,1,1,0));
@@ -123,14 +123,14 @@ class StudentRepositoryTest {
 
   @Test  //異常系
   void IDに紐づく受講生検索で存在しないIDの場合はNullを返すこと(){
-    Student actual = sut.searchStudent("5555");
+    Student actual = sut.searchStudent(5555);
     assertThat(actual).isNull();
   }
 
 
   @Test  //searchStudentCourse
   void IDに紐づく受講生コース情報の検索で存在しないIDの場合空のリストを返す(){
-     String studentId = "5555";
+     int studentId = 5555;
     List<StudentCourse> actual = sut.searchStudentCourse(studentId);
     assertThat(actual).hasSize(0);
     //ID 1 に対して紐づくコース情報は2件

@@ -47,7 +47,7 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
 
   @Test //@GetMapping("/student/{id}")
   void 受講生詳細検索_idに紐づく受講生情報を取得できていること() throws Exception {
-    String id = "99";
+    int id = 99;
     mockMvc.perform(get("/student/{id}", id))
         .andExpect(status().isOk());
 
@@ -90,7 +90,7 @@ mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).co
     """
         {
                 "student": {
-                    "id": "2",
+                    "id": 2,
                     "name": "佐藤健",
                     "furigana": "サトウケン",
                     "nickname": "けんけん",
@@ -128,7 +128,7 @@ verify(service,times(1)).updateStudent(any());
   @Test //入力チェック　エラーが出ないチェック
   void 受講生詳細の受講生で適切な値を入力した時に入力チェックに異常が発生しない事(){
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     student.setName("林田耕太");
     student.setFurigana("ハヤシダコウタ");
     student.setNickname("はやしだ");
@@ -147,7 +147,7 @@ verify(service,times(1)).updateStudent(any());
   @Test //入力チェック　エラーになるかチェック
   void 受講生詳細の受講生IDに数字以外を用いた時に入力チェックに掛かること(){
     Student student = new Student();
-    student.setId("テストです");
+    student.setId(0);
     student.setName("林田耕太");
     student.setFurigana("ハヤシダコウタ");
     student.setNickname("はやしだ");
@@ -158,7 +158,7 @@ verify(service,times(1)).updateStudent(any());
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
     assertThat(violations.size()).isEqualTo(1);
-    assertThat(violations).extracting("message").containsOnly("数値のみを入力してください。");
+    assertThat(violations).extracting("message").containsOnly("IDを入力してください");
     //extracting → violationsは複数のものを持ってるので対象のフィールド名を指定して内容を書く
   }
 

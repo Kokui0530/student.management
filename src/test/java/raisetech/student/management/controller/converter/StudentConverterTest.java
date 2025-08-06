@@ -23,7 +23,7 @@ class StudentConverterTest {
 
   @Test
   void StudentIdが一致する受講生詳細とコース情報が取れてくること(){
-    String id = "999";
+    int id = 999;
 
     Student student = new Student();
     student.setId(id);
@@ -51,7 +51,7 @@ class StudentConverterTest {
   @Test
   void 受講生のリストと受講生コース情報のリストを渡して受講生詳細のリストが作成出来る事() {
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     student.setName("林田耕太");
     student.setFurigana("ハヤシダコウタ");
     student.setNickname("はやしだ");
@@ -63,8 +63,8 @@ class StudentConverterTest {
     student.setDeleted(false);
 
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setId("1");
-    studentCourse.setStudentsId("1");
+    studentCourse.setId(1);
+    studentCourse.setStudentsId(1);
     studentCourse.setCoursesName("Javaコース");
     studentCourse.setStartDate(LocalDateTime.now());
     studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
@@ -81,7 +81,7 @@ class StudentConverterTest {
   @Test
   void 受講生のリストと受講生コース情報のリストを渡した時に紐づかない受講生コース情報は除外される事() {
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     student.setName("林田耕太");
     student.setFurigana("ハヤシダコウタ");
     student.setNickname("はやしだ");
@@ -93,8 +93,8 @@ class StudentConverterTest {
     student.setDeleted(false);
 
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setId("1");
-    studentCourse.setStudentsId("2");
+    studentCourse.setId(1);
+    studentCourse.setStudentsId(2);
     studentCourse.setCoursesName("Javaコース");
     studentCourse.setStartDate(LocalDateTime.now());
     studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
