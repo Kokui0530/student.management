@@ -40,7 +40,7 @@ public class StudentService {
     //受講生情報とコース情報を紐づけ
     List<StudentDetail>studentDetails = converter.convertStudentDetails(studentList,studentCourseList);
     //コース情報に申し込み状況を紐づけ
-    return converter.convertCourseStatusList(studentDetails,studentAppStatusList);
+    return converter.convertCourseStatus(studentDetails,studentAppStatusList);
   }
 
   /**

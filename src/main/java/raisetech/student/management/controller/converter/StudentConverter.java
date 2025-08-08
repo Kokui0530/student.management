@@ -43,7 +43,7 @@ public class StudentConverter {
     });
     return studentDetails;
   }
-  public List<StudentDetail> convertCourseStatusList (List<StudentDetail> studentDetails,
+  public List<StudentDetail> convertCourseStatus(List<StudentDetail> studentDetails,
       List<StudentAppStatus> studentAppStatusList){
   //コース情報と申し込み情報の紐づけ
     Map<Integer,StudentAppStatus> studentAppStatusMap = new HashMap<>();

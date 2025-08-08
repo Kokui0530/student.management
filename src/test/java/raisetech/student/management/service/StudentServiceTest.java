@@ -54,7 +54,7 @@ class StudentServiceTest {
     verify(repository, times(1)).search(); //repositoryのsearchを1回ちゃんと呼び出せてるか確認
     verify(repository, times(1)).searchStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
-    verify(converter,times(1)).convertCourseStatusList(studentDetails,studentAppStatusList);
+    verify(converter,times(1)).convertCourseStatus(studentDetails,studentAppStatusList);
 
     assertEquals(actual,studentDetails);
   }

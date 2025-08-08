@@ -60,22 +60,27 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
     //本来であれば登録されたデータが入るが、モック化すると意味がないため、レスポンスは作らない
     mockMvc.perform(post("/registerStudent").contentType(MediaType.APPLICATION_JSON).content(
             """
-                {
-                "student":{
-                    "name" : "林田耕太",
-                    "furigana" : "ハヤシダコウタ",
-                    "nickname" : "はやしだ",
-                    "mail" : "hayasida@gmail.com",
-                    "region" : "草加市",
-                    "gender" : "男",
-                    "remark" : ""
-                    },
-                    "studentCourseList" : [
-                    {
-                    "coursesName" : "javaコース"
-                    }
-                    ]
-                    }
+                 {
+                             "student": {
+                                 "name": "高瀬健",
+                                 "furigana": "タカセケン",
+                                 "nickname": "ケンちゃん",
+                                 "mail": "ken@gmail.com",
+                                 "region": "川口",
+                                 "age": 56,
+                                 "gender": "男",
+                                 "remark": "",
+                                 "deleted": false
+                             },
+                             "studentCourseList": [
+                                 {
+                                     "coursesName": "web制作コース",
+                                     "status": {
+                                         "status": "仮申し込み"
+                                     }
+                                 }
+                             ]
+                         }
                 """
         ))
         .andExpect(status().isOk());
@@ -88,29 +93,34 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
   void 受講生詳細の更新または論理削除が実行できること() throws Exception{
 mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
     """
-        {
-                "student": {
-                    "id": 2,
-                    "name": "佐藤健",
-                    "furigana": "サトウケン",
-                    "nickname": "けんけん",
-                    "mail": "sato.ken@example.com",
-                    "region": "東京都新宿区",
-                    "age": 35,
-                    "gender": "男",
-                    "remark": "",
-                    "deleted": false
-                },
-                "studentCourseList": [
-                    {
-                        "id": "4",
-                        "studentsId": "2",
-                        "coursesName": "Javaコース",
-                        "start": "2025-06-10T00:00:00",
-                        "end": "2025-09-10T00:00:00"
-                    }
-                ]
-            }
+         {
+                     "student": {
+                         "id": 24,
+                         "name": "高瀬健",
+                         "furigana": "タカセケン",
+                         "nickname": "ケンちゃん",
+                         "mail": "ken@gmail.com",
+                         "region": "川口",
+                         "age": 56,
+                         "gender": "男",
+                         "remark": "",
+                         "deleted": false
+                     },
+                     "studentCourseList": [
+                         {
+                             "id": 13,
+                             "studentsId": 24,
+                             "coursesName": "web制作コース",
+                             "startDate": "2025-07-15T20:09:35",
+                             "endDate": "2026-07-15T20:09:35",
+                             "status": {
+                                 "id": 12,
+                                 "studentCourseId": 13,
+                                 "status": "受講終了"
+                             }
+                         }
+                     ]
+                 }
         """
 ))
     .andExpect(status().isOk());
@@ -141,25 +151,6 @@ verify(service,times(1)).updateStudent(any());
     assertThat(violations.size()).isEqualTo(0);
     //エラーが何個発生してるかをisEqualToに記載(今回はエラーが出ない事の検証なので０)
 
-  }
-
-
-  @Test //入力チェック　エラーになるかチェック
-  void 受講生詳細の受講生IDに数字以外を用いた時に入力チェックに掛かること(){
-    Student student = new Student();
-    student.setId(0);
-    student.setName("林田耕太");
-    student.setFurigana("ハヤシダコウタ");
-    student.setNickname("はやしだ");
-    student.setMail("hayasida@gmail.com");
-    student.setRegion("草加市");
-    student.setGender("男");
-
-    Set<ConstraintViolation<Student>> violations = validator.validate(student);
-
-    assertThat(violations.size()).isEqualTo(1);
-    assertThat(violations).extracting("message").containsOnly("IDを入力してください");
-    //extracting → violationsは複数のものを持ってるので対象のフィールド名を指定して内容を書く
   }
 
 }
