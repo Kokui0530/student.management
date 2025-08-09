@@ -51,12 +51,11 @@ public class StudentConverter {
       studentAppStatusMap.put(studentAppstatus.getStudentCourseId(),studentAppstatus);
     }
 
-    for (StudentDetail studentDetail : studentDetails){
-      for (StudentCourse studentCourse : studentDetail.getStudentCourseList()){
-        StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
-        studentCourse.setStatus(studentAppStatus);
-      }
-    }
+    studentDetails.stream().flatMap(studentDetail -> studentDetail.getStudentCourseList().stream())
+        .forEach(studentCourse -> {
+          StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
+          studentCourse.setStatus(studentAppStatus);
+        });
   return studentDetails;
   }
   }

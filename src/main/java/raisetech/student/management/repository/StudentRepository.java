@@ -44,6 +44,21 @@ public interface StudentRepository {
   List<StudentCourse> searchStudentCourse(int studentId);
 
   /**
+   * 受講生のコース申し込み状況の全件検索を行います。
+   *
+   * @return 受講生んｐコース申し込み状況(全件)
+   */
+  List<StudentAppStatus> searchStatusList();
+
+  /**
+   * 受講生コースIDに紐づく受講生コース申し込み状況を検索します。
+   *
+   * @param StudentCourseId　受講生コースID
+   * @return 受講生コースIDに紐づく受講生コース申し込み状況を検索します。
+   */
+  StudentAppStatus searchStudentStatus(int StudentCourseId);
+
+  /**
    * 受講生を新規登録します。IDに関しては自動採番を行う。
    *
    * @param student 受講生
@@ -56,6 +71,14 @@ public interface StudentRepository {
    * @param studentCourse 受講生コース情報
    */
   void registerStudentCourse(StudentCourse studentCourse);
+
+
+  /**
+   * 受講生コース申し込み状況を新規登録します。IDに関しては自動採番を行う。
+   *
+   * @param studentAppStatus 受講生コース申し込み状況
+   */
+  void registerStudentAppStatus(StudentAppStatus studentAppStatus);
 
   /**
    * 受講生を更新します。
@@ -71,20 +94,17 @@ public interface StudentRepository {
    */
   void updateStudentCourse(StudentCourse studentCourse);
 
-  // 全件検索
-  List<StudentAppStatus> searchStatusList();
+  /**
+   * 受講生コース申し込み状況の申し込み状況を更新します。
+   *
+   * @param StudentAppStatus 受講生コース申し込み状況
+   */
+  void updateStudentAppStatus(StudentAppStatus StudentAppStatus);
 
-  //受講生コースIDに紐づく受講生申し込み状況の検索
-  StudentAppStatus searchStudentStatus(int StudentCourseId);
 
   //statusごとの検索
   List<StudentAppStatus> searchStudentAppStatus(String status);
 
-  //新規登録
-  void registerStudentAppStatus(StudentAppStatus studentAppstatus);
-
-  //　更新　
-  void updateStudentAppStatus(StudentAppStatus StudentAppstatus);
 
 
 }
