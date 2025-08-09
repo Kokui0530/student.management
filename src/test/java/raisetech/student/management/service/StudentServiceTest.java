@@ -46,7 +46,7 @@ class StudentServiceTest {
 
     Mockito.when(repository.search()).thenReturn(studentList); //repositoryのsearchを呼び出したら、studentListを返すよって処理
     Mockito.when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
-    Mockito.when(repository.searchStatus()).thenReturn(studentAppStatusList);
+    Mockito.when(repository.searchStatusList()).thenReturn(studentAppStatusList);
     Mockito.when(converter.convertStudentDetails(studentList,studentCourseList)).thenReturn(studentDetails);
 
     List<StudentDetail> actual = sut.searchStudentList();

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
 
 @MybatisTest
@@ -136,6 +137,49 @@ class StudentRepositoryTest {
     //ID 1 に対して紐づくコース情報は2件
   }
 
+  @Test //searchStatusList
+  void 申し込み状況の全件検索が出来る事(){
+    List<StudentAppStatus> actual = sut.searchStatusList();
+    assertThat(actual.size()).isEqualTo(10);
+  }
 
+  @Test  //searchStudentStatus
+  void コースIDに紐づく申し込み状況の検索が出来る事(){
+    int id = 1;
+     StudentAppStatus studentAppStatus = new StudentAppStatus();
+     studentAppStatus.setStudentCourseId(id);
+     studentAppStatus.setStatus("受講終了");
+
+    StudentAppStatus actual = sut.searchStudentStatus(id);
+
+    assertThat(actual.getStudentCourseId()).isEqualTo(studentAppStatus.getStudentCourseId());
+    assertThat(actual.getStatus()).isEqualTo(studentAppStatus.getStatus());
+   }
+
+   @Test //registerStudentAppStatus
+  void 申し込み状況の登録が出来る事(){
+    StudentAppStatus studentAppStatus = new StudentAppStatus();
+    studentAppStatus.setStudentCourseId(11);
+    studentAppStatus.setStatus("受講中");
+
+   sut.registerStudentAppStatus(studentAppStatus);
+   List<StudentAppStatus> actual = sut.searchStatusList();
+   assertThat(actual.size()).isEqualTo(11);
+  }
+
+  @Test  //updateStudentAppStatus
+  void コース情報が更新出来る事(){
+    int StudentCourseId = 1;
+    StudentAppStatus expected = new StudentAppStatus();
+    expected.setId(1);
+    expected.setStudentCourseId(StudentCourseId);
+    expected.setStatus("受講中");
+
+    sut.updateStudentAppStatus(expected);
+
+    StudentAppStatus actual = sut.searchStudentStatus(StudentCourseId);
+
+    assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+  }
 
 }

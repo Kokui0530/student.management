@@ -36,7 +36,7 @@ public class StudentService {
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
-    List<StudentAppStatus> studentAppStatusList = repository.searchStatus();
+    List<StudentAppStatus> studentAppStatusList = repository.searchStatusList();
     //受講生情報とコース情報を紐づけ
     List<StudentDetail>studentDetails = converter.convertStudentDetails(studentList,studentCourseList);
     //コース情報に申し込み状況を紐づけ

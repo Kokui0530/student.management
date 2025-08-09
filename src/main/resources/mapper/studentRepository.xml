@@ -47,7 +47,7 @@
   </update>
 
   <!--受講生申し込み状況の全件検索-->
-  <select id="searchStatus" resultType="raisetech.student.management.data.StudentAppStatus">
+  <select id="searchStatusList" resultType="raisetech.student.management.data.StudentAppStatus">
     SELECT * FROM student_appstatus
   </select>
 

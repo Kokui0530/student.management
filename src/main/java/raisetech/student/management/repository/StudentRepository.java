@@ -72,13 +72,13 @@ public interface StudentRepository {
   void updateStudentCourse(StudentCourse studentCourse);
 
   // 全件検索
-  List<StudentAppStatus> searchStatus();
+  List<StudentAppStatus> searchStatusList();
 
   //受講生コースIDに紐づく受講生申し込み状況の検索
   StudentAppStatus searchStudentStatus(int StudentCourseId);
 
   //statusごとの検索
-  StudentAppStatus searchStudentAppstatus(String status);
+  List<StudentAppStatus> searchStudentAppStatus(String status);
 
   //新規登録
   void registerStudentAppStatus(StudentAppStatus studentAppstatus);
