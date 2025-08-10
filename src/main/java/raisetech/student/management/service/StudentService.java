@@ -1,6 +1,7 @@
 package raisetech.student.management.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentInfo;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.repository.StudentRepository;
 
@@ -61,6 +63,31 @@ public class StudentService {
       studentCourse.setStatus(studentAppStatus);
     }
     return new StudentDetail(student, studentCourseList);
+  }
+
+  /**
+   * 申し込み情報ごとの検索です。
+   * 申し込み情報からコースIDを取得して後、そのコース情報に紐づく受講生情報を取得します。
+   *
+   * @param status 申し込み情報
+   * @return 申し込み情報に当てはまる、受講生コース情報と受講生詳細
+   */
+  public List<StudentInfo> searchStudentAppStatus(String status) {
+    List<StudentAppStatus> studentAppStatusList = repository.searchStudentAppStatus(status);
+    List<StudentInfo> studentInfoList = new ArrayList<>();
+
+    studentAppStatusList.forEach(studentAppStatus -> {
+      int studentCourseId = studentAppStatus.getStudentCourseId();
+      StudentCourse studentCourse = repository.searchStudentCourseById(studentCourseId);
+      Student student = repository.searchStudent(studentCourse.getStudentsId());
+      StudentInfo info = new StudentInfo();
+      info.setStudent(student);
+      info.setStudentCourse(studentCourse);
+      info.setStudentAppStatus(studentAppStatus);
+      studentInfoList.add(info);
+    });
+    return studentInfoList;
+
   }
 
   /**

@@ -56,6 +56,11 @@
     SELECT * FROM student_appstatus WHERE student_course_id= #{studentCourseId}
   </select>
 
+  <!--受講生コースIDに紐づく受講生コース情報を検索-->
+  <select id="searchStudentCourseById" resultType="raisetech.student.management.data.StudentCourse">
+    SELECT * FROM students_courses WHERE id= #{studentCourseId}
+  </select>
+
   <!--statusごとの検索-->
   <select id="searchStudentAppStatus" resultType="raisetech.student.management.data.StudentAppStatus">
     SELECT * FROM student_appstatus WHERE status= #{"status"}

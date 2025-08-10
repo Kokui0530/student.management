@@ -44,9 +44,17 @@ public interface StudentRepository {
   List<StudentCourse> searchStudentCourse(int studentId);
 
   /**
+   * 受講生コースの検索を行います。
+   * @param studentCourseId 受講生コースID
+   * @return 受講生コース情報
+   */
+  StudentCourse searchStudentCourseById(int studentCourseId);
+
+
+  /**
    * 受講生のコース申し込み状況の全件検索を行います。
    *
-   * @return 受講生んｐコース申し込み状況(全件)
+   * @return 受講生コース申し込み状況(全件)
    */
   List<StudentAppStatus> searchStatusList();
 
