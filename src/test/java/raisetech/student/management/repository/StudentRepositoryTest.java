@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import raisetech.student.management.data.Student;
+import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
 
 @MybatisTest
@@ -24,8 +25,8 @@ class StudentRepositoryTest {
 
   @Test  //searchStudent
   void IDに紐づく受講生詳細の検索(){
-    Student actual = sut.searchStudent("1");
-    assertThat(actual.getId()).isEqualTo("1"); //IDが同じ受講生が取れてくる
+    Student actual = sut.searchStudent(1);
+    assertThat(actual.getId()).isEqualTo(1); //IDが同じ受講生が取れてくる
   }
 
   @Test //searchStudentCourseList
@@ -37,7 +38,7 @@ class StudentRepositoryTest {
   @Test  //searchStudentCourse
   void IDに紐づく受講生コース情報の検索(){
     Student student = new Student();
-    student.setId("1");
+    student.setId(1);
     List<StudentCourse> actual = sut.searchStudentCourse(student.getId());
     assertThat(actual.size()).isEqualTo(2);
     //ID 1 に対して紐づくコース情報は2件
@@ -66,7 +67,7 @@ class StudentRepositoryTest {
   @Test //registerStudentCourse
   void 受講生コース情報の登録が行えること(){
     StudentCourse studentCourse = new StudentCourse();
-    studentCourse.setStudentsId("1");
+    studentCourse.setStudentsId(1);
     studentCourse.setCoursesName("Javaコース");
     studentCourse.setStartDate(LocalDateTime.now());
     studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
@@ -80,7 +81,7 @@ class StudentRepositoryTest {
 
   @Test //updateStudent
   void 受講生詳細の更新が行えること(){
-    String id = "1";
+    int id = 1;
     Student student = new Student();
     student.setId(id);
     student.setName("山田太郎");
@@ -101,9 +102,9 @@ class StudentRepositoryTest {
 
   @Test //updateStudentCourse
   void 受講生コース情報の更新が行えること(){
-    String studentId = "1";
+    int studentId = 1;
     StudentCourse expected = new StudentCourse();
-    expected.setId("1");
+    expected.setId(1);
     expected.setStudentsId(studentId);
     expected.setCoursesName("Javaコース");
     expected.setStartDate(LocalDateTime.of(2024,4,1,1,0));
@@ -123,19 +124,62 @@ class StudentRepositoryTest {
 
   @Test  //異常系
   void IDに紐づく受講生検索で存在しないIDの場合はNullを返すこと(){
-    Student actual = sut.searchStudent("5555");
+    Student actual = sut.searchStudent(5555);
     assertThat(actual).isNull();
   }
 
 
   @Test  //searchStudentCourse
   void IDに紐づく受講生コース情報の検索で存在しないIDの場合空のリストを返す(){
-     String studentId = "5555";
+     int studentId = 5555;
     List<StudentCourse> actual = sut.searchStudentCourse(studentId);
     assertThat(actual).hasSize(0);
     //ID 1 に対して紐づくコース情報は2件
   }
 
+  @Test //searchStatusList
+  void 申し込み状況の全件検索が出来る事(){
+    List<StudentAppStatus> actual = sut.searchStatusList();
+    assertThat(actual.size()).isEqualTo(10);
+  }
 
+  @Test  //searchStudentStatus
+  void コースIDに紐づく申し込み状況の検索が出来る事(){
+    int id = 1;
+     StudentAppStatus studentAppStatus = new StudentAppStatus();
+     studentAppStatus.setStudentCourseId(id);
+     studentAppStatus.setStatus("受講終了");
+
+    StudentAppStatus actual = sut.searchStudentStatus(id);
+
+    assertThat(actual.getStudentCourseId()).isEqualTo(studentAppStatus.getStudentCourseId());
+    assertThat(actual.getStatus()).isEqualTo(studentAppStatus.getStatus());
+   }
+
+   @Test //registerStudentAppStatus
+  void 申し込み状況の登録が出来る事(){
+    StudentAppStatus studentAppStatus = new StudentAppStatus();
+    studentAppStatus.setStudentCourseId(11);
+    studentAppStatus.setStatus("受講中");
+
+   sut.registerStudentAppStatus(studentAppStatus);
+   List<StudentAppStatus> actual = sut.searchStatusList();
+   assertThat(actual.size()).isEqualTo(11);
+  }
+
+  @Test  //updateStudentAppStatus
+  void コース情報が更新出来る事(){
+    int StudentCourseId = 1;
+    StudentAppStatus expected = new StudentAppStatus();
+    expected.setId(1);
+    expected.setStudentCourseId(StudentCourseId);
+    expected.setStatus("受講中");
+
+    sut.updateStudentAppStatus(expected);
+
+    StudentAppStatus actual = sut.searchStudentStatus(StudentCourseId);
+
+    assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+  }
 
 }

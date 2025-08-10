@@ -18,3 +18,12 @@ CREATE TABLE IF NOT EXISTS students_courses (
    start_date TIMESTAMP DEFAULT NULL,
    end_date TIMESTAMP DEFAULT NULL
 );
+
+
+CREATE TABLE IF NOT EXISTS student_appstatus (
+   id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+   student_course_id INT NOT NULL,
+   status VARCHAR(100) NOT NULL
+);
+
+
