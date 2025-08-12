@@ -16,6 +16,7 @@ import raisetech.student.management.controller.converter.StudentConverter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentInfo;
 import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.repository.StudentRepository;
 
@@ -49,12 +50,12 @@ class StudentServiceTest {
     Mockito.when(repository.searchStatusList()).thenReturn(studentAppStatusList);
     Mockito.when(converter.convertStudentDetails(studentList,studentCourseList)).thenReturn(studentDetails);
 
-    List<StudentDetail> actual = sut.searchStudentList();
+    List<StudentInfo> actual = sut.searchStudentList();
 
     verify(repository, times(1)).search(); //repositoryのsearchを1回ちゃんと呼び出せてるか確認
     verify(repository, times(1)).searchStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
-    verify(converter,times(1)).convertCourseStatus(studentDetails,studentAppStatusList);
+    verify(converter,times(1)).convertStudentInfo(studentDetails,studentAppStatusList);
 
     assertEquals(actual,studentDetails);
   }
@@ -75,7 +76,7 @@ class StudentServiceTest {
     Mockito.when(repository.searchStudentStatus(id)).thenReturn(studentAppStatus);
 
     StudentDetail expected = new StudentDetail(student,studentCourseList);
-    StudentDetail actual =  sut.searchStudent(id);
+    List<StudentInfo> actual =  sut.searchStudent(id);
 
     verify(repository,times(1)).searchStudent(id);
     verify(repository,times(1)).searchStudentCourse(id);
@@ -89,25 +90,21 @@ class StudentServiceTest {
     int id = 888;
     Student student = new Student();
     student.setId(id);
-    StudentAppStatus studentAppStatus1 = new StudentAppStatus();
-    StudentAppStatus studentAppStatus2 = new StudentAppStatus();
-    StudentCourse course1 = new StudentCourse();
-    course1.setStatus(studentAppStatus1);
-    course1.setId(999);
-    StudentCourse course2 = new StudentCourse();
-    course2.setStatus(studentAppStatus2);
-    course2.setId(777);
-    List<StudentCourse> studentCourseList = List.of(course1,course2);
+    StudentCourse studentCourse = new StudentCourse();
+    studentCourse.setId(id);
+    StudentAppStatus studentAppStatus = new StudentAppStatus();
+    studentAppStatus.setId(id);
 
-    StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
+    StudentInfo studentInfo = new StudentInfo();
+    studentInfo.setStudent(student);
+    studentInfo.setStudentCourse(studentCourse);
+    studentInfo.setStudentAppStatus(studentAppStatus);
 
-    sut.registerStudent(studentDetail);
+    sut.registerStudent(studentInfo);
 
     verify(repository,times(1)).registerStudent(student);
-    verify(repository,times(1)).registerStudentCourse(course1);
-    verify(repository,times(1)).registerStudentCourse(course2);
-    verify(repository,times(1)).registerStudentAppStatus(studentAppStatus1);
-    verify(repository,times(1)).registerStudentAppStatus(studentAppStatus2);
+    verify(repository,times(1)).registerStudentCourse(studentCourse);
+    verify(repository,times(1)).registerStudentAppStatus(studentAppStatus);
 
   }
   @Test //initStudentsCourse
@@ -141,22 +138,21 @@ class StudentServiceTest {
   @Test //updateStudent
   void 受講生詳細の更新_リポジトリの処理が適切に行えていること(){
     Student student = new Student();
-    StudentCourse course1 = new StudentCourse();
+    StudentCourse studentCourse = new StudentCourse();
     StudentAppStatus studentAppStatus = new StudentAppStatus();
-    studentAppStatus.setStatus("本申し込み");
-    course1.setId(99);
-    course1.setStatus(studentAppStatus);
-    StudentCourse course2 = new StudentCourse();
-    List<StudentCourse> studentCourseList = List.of(course1,course2);
+    StudentInfo studentInfo = new StudentInfo();
+    studentInfo.setStudent(student);
+    studentInfo.setStudentCourse(studentCourse);
+    studentInfo.setStudentAppStatus(studentAppStatus);
+    List<StudentInfo>studentInfoList = new ArrayList<>();
+    studentInfoList.add(studentInfo);
 
-    StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
 
-    sut.updateStudent(studentDetail);
+    sut.updateStudent(studentInfoList);
 
     verify(repository,times(1)).updateStudent(student);
-    verify(repository,times(1)).updateStudentCourse(course1);
-    verify(repository,times(1)).updateStudentCourse(course2);
-    verify(repository,times(1)).updateStudentAppStatus(course1.getStatus());
-    verify(repository,times(1)).updateStudentAppStatus(course2.getStatus());
+    verify(repository,times(1)).updateStudentCourse(studentCourse);
+    verify(repository,times(1)).updateStudentAppStatus(studentAppStatus);
+
   }
 }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentInfo;
 import raisetech.student.management.domain.StudentDetail;
 
 class StudentConverterTest {
@@ -19,6 +20,7 @@ class StudentConverterTest {
 
   @BeforeEach
   void before(){
+
     sut = new  StudentConverter();
   }
 
@@ -72,10 +74,10 @@ class StudentConverterTest {
     studentDetails.add(studentDetail);
 
     //実行
-    List<StudentDetail> actual = sut.convertCourseStatus(studentDetails,studentAppStatusList);
+    List<StudentInfo> actual = sut.convertStudentInfo(studentDetails,studentAppStatusList);
 
     //statusが同じか確認
-    StudentAppStatus result = actual.get(0).getStudentCourseList().get(0).getStatus();
+    StudentAppStatus result = actual.get(0).getStudentAppStatus();
     assertEquals(status,result);
 
   }
@@ -95,7 +97,6 @@ class StudentConverterTest {
     studentCourse.setCoursesName("Javaコース");
     studentCourse.setStartDate(LocalDateTime.now());
     studentCourse.setEndDate(LocalDateTime.now().plusYears(1));
-    studentCourse.setStatus(studentAppStatus);
 
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -147,10 +148,10 @@ class StudentConverterTest {
     StudentDetail studentDetail = new StudentDetail(student,studentCourseList);
     List<StudentDetail> studentDetails = List.of(studentDetail);
 
-    List<StudentDetail> actual = sut.convertCourseStatus(studentDetails,studentAppStatusList);
+    List<StudentInfo> actual = sut.convertStudentInfo(studentDetails,studentAppStatusList);
 
-    assertThat(actual.get(0).getStudentCourseList().get(0).getId()).isEqualTo(studentCourse.getId());
-    assertThat(actual.get(0).getStudentCourseList().get(0) .getStatus()).isNull();//コースIdが紐づかない場合はstatusはnull
+    assertThat(actual.get(0).getStudentCourse().getId()).isEqualTo(studentCourse.getId());
+    assertThat(actual.get(0).getStudentAppStatus()).isNull();//コースIdが紐づかない場合はstatusはnull
   }
 
 

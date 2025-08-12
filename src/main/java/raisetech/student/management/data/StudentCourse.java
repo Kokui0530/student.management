@@ -3,7 +3,6 @@ package raisetech.student.management.data;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,7 +34,4 @@ public class StudentCourse {
   @Schema(description = "受講終了日" , example = "2025.09.01")
   private LocalDateTime endDate;
 
-  @Schema(description = "申し込み状況" , example = "受講中")
-  @NotNull
-  private StudentAppStatus status;
 }

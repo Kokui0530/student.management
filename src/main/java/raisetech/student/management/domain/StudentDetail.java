@@ -11,7 +11,7 @@ import lombok.Setter;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentCourse;
 
-@Schema(description = "受講生詳細")
+@Schema(description = "受講生詳細　1受講生：複数コース：複数申し込み状況")
 @Getter
 @Setter
 @NoArgsConstructor //引数を使わないコンストラクター
