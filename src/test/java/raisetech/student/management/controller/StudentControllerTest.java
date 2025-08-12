@@ -93,34 +93,34 @@ class StudentControllerTest {  //これでテスト用のスプリングブー�
   void 受講生詳細の更新または論理削除が実行できること() throws Exception{
 mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
     """
-         {
-                     "student": {
-                         "id": 24,
-                         "name": "高瀬健",
-                         "furigana": "タカセケン",
-                         "nickname": "ケンちゃん",
-                         "mail": "ken@gmail.com",
-                         "region": "川口",
-                         "age": 56,
-                         "gender": "男",
-                         "remark": "",
-                         "deleted": false
-                     },
-                     "studentCourseList": [
-                         {
-                             "id": 13,
-                             "studentsId": 24,
-                             "coursesName": "web制作コース",
-                             "startDate": "2025-07-15T20:09:35",
-                             "endDate": "2026-07-15T20:09:35",
-                             "status": {
-                                 "id": 12,
-                                 "studentCourseId": 13,
-                                 "status": "受講終了"
-                             }
-                         }
-                     ]
-                 }
+        [
+        {
+                          "student": {
+                              "id": 2,
+                              "name": "佐藤健",
+                              "furigana": "サトウケン",
+                              "nickname": "けんけん",
+                              "mail": "sato.ken@example.com",
+                              "region": "東京都新宿区",
+                              "age": 35,
+                              "gender": "男",
+                              "remark": "",
+                              "deleted": false
+                          },
+                          "studentCourse": {
+                              "id": 4,
+                              "studentsId": 2,
+                              "coursesName": "Javaコース",
+                              "startDate": "2025-06-10T00:00:00",
+                              "endDate": "2025-09-10T00:00:00"
+                          },
+                          "studentAppStatus": {
+                              "id": 4,
+                              "studentCourseId": 4,
+                              "status": "受講終了"
+                          }
+                      }
+                      ]
         """
 ))
     .andExpect(status().isOk());
