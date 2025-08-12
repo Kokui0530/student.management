@@ -25,7 +25,7 @@ public class StudentService {
   private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository, StudentConverter converter){
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
     this.converter = converter;
   }
@@ -40,15 +40,14 @@ public class StudentService {
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
     List<StudentAppStatus> studentAppStatusList = repository.searchStatusList();
     //受講生情報とコース情報を紐づけ
-    List<StudentDetail>studentDetails = converter.convertStudentDetails(studentList,studentCourseList);
+    List<StudentDetail> studentDetails = converter.convertStudentDetails(studentList,
+        studentCourseList);
     //コース情報に申し込み状況を紐づけ
-    return converter.convertStudentInfo(studentDetails,studentAppStatusList);
+    return converter.convertStudentInfo(studentDetails, studentAppStatusList);
   }
 
   /**
-   * 受講生詳細検索です。
-   * IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して
-   * 更に受講生コース情報に紐づく受講生申し込み情報を設定します。
+   * 受講生詳細検索です。 IDに紐づく受講生情報を取得した後、その受講生に紐づく受講生コース情報を取得して 更に受講生コース情報に紐づく受講生申し込み情報を設定します。
    *
    * @param id 　受講生ID
    * @return 受講生詳細
@@ -57,8 +56,8 @@ public class StudentService {
   public List<StudentInfo> searchStudent(int id) {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
-    List<StudentInfo>studentInfoList = new ArrayList<>();
-    for (StudentCourse studentCourse : studentCourseList){
+    List<StudentInfo> studentInfoList = new ArrayList<>();
+    for (StudentCourse studentCourse : studentCourseList) {
       StudentAppStatus studentAppStatus = repository.searchStudentStatus(studentCourse.getId());
 
       StudentInfo studentInfo = new StudentInfo();
@@ -71,8 +70,7 @@ public class StudentService {
   }
 
   /**
-   * 申し込み情報ごとの検索です。
-   * 申し込み情報からコースIDを取得して後、そのコース情報に紐づく受講生情報を取得します。
+   * 申し込み情報ごとの検索です。 申し込み情報からコースIDを取得して後、そのコース情報に紐づく受講生情報を取得します。
    *
    * @param status 申し込み情報
    * @return 申し込み情報に当てはまる、受講生コース情報と受講生詳細
@@ -97,8 +95,7 @@ public class StudentService {
   }
 
   /**
-   * 受講生詳細の登録を行います。
-   * 受講生と受講生コース情報と申し込み情報を個別に登録し、受講生コース情報には受講生情報を紐づける値やコース開始日、コース終了日を設定します。
+   * 受講生詳細の登録を行います。 受講生と受講生コース情報と申し込み情報を個別に登録し、受講生コース情報には受講生情報を紐づける値やコース開始日、コース終了日を設定します。
    * 受講生申し込み情報には受講生コース情報を紐づける値を設定します。
    *
    * @param studentInfo 受講生詳細
@@ -121,7 +118,7 @@ public class StudentService {
    * 受講生コース情報を登録する際の初期情報を設定します。
    *
    * @param studentCourses 受講生コース情報
-   * @param id       受講生
+   * @param id             受講生
    */
   void initStudentsCourse(StudentCourse studentCourses, int id) {
     LocalDateTime now = LocalDateTime.now();
@@ -137,7 +134,7 @@ public class StudentService {
    * @param studentAppStatus 受講生申し込み情報
    * @param id　受講生
    */
-  void linkCourseToStatus(StudentAppStatus studentAppStatus , int id) {
+  void linkCourseToStatus(StudentAppStatus studentAppStatus, int id) {
     studentAppStatus.setStudentCourseId(id);
   }
 
@@ -147,8 +144,8 @@ public class StudentService {
    * @param studentInfoList 受講生詳細
    */
   @Transactional
-  public void updateStudent(List<StudentInfo>studentInfoList) {
-       for(StudentInfo studentInfo : studentInfoList){
+  public void updateStudent(List<StudentInfo> studentInfoList) {
+    for (StudentInfo studentInfo : studentInfoList) {
       repository.updateStudent(studentInfo.getStudent());
       repository.updateStudentCourse(studentInfo.getStudentCourse());
       repository.updateStudentAppStatus(studentInfo.getStudentAppStatus());

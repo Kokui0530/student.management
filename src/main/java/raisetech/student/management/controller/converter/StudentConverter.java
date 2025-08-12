@@ -44,6 +44,7 @@ public class StudentConverter {
     });
     return studentDetails;
   }
+
   //コース情報と申し込み情報の紐づけ
   public List<StudentInfo> convertStudentInfo(List<StudentDetail> studentDetails,
       List<StudentAppStatus> studentAppStatusList) {
@@ -51,7 +52,7 @@ public class StudentConverter {
     for (StudentAppStatus studentAppstatus : studentAppStatusList) {
       studentAppStatusMap.put(studentAppstatus.getStudentCourseId(), studentAppstatus);
     }
-    List<StudentInfo>studentInfoList = new ArrayList<>();
+    List<StudentInfo> studentInfoList = new ArrayList<>();
     for (StudentDetail studentDetail : studentDetails) {
       for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
         StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
@@ -66,5 +67,5 @@ public class StudentConverter {
     }
     return studentInfoList;
   }
-  }
+}
 

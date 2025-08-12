@@ -45,6 +45,7 @@ public interface StudentRepository {
 
   /**
    * 受講生コースの検索を行います。
+   *
    * @param studentCourseId 受講生コースID
    * @return 受講生コース情報
    */
@@ -61,13 +62,14 @@ public interface StudentRepository {
   /**
    * 受講生コースIDに紐づく受講生コース申し込み状況を検索します。
    *
-   * @param StudentCourseId　受講生コースID
+   * @param StudentCourseId 　受講生コースID
    * @return 受講生コースIDに紐づく受講生コース申し込み状況を検索します。
    */
   StudentAppStatus searchStudentStatus(int StudentCourseId);
 
   /**
    * 申し込み情報ひ紐づくコース情報、受講生詳細を検索します。
+   *
    * @param status 申し込み情報
    * @return 申し込み情報に紐づくコース情報と受講生詳細
    */
@@ -115,9 +117,6 @@ public interface StudentRepository {
    * @param StudentAppStatus 受講生コース申し込み状況
    */
   void updateStudentAppStatus(StudentAppStatus StudentAppStatus);
-
-
-
 
 
 }
