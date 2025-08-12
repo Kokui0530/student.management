@@ -35,14 +35,14 @@ public class StudentService {
    *
    * @return 受講生詳細一覧（全件）
    */
-  public List<StudentDetail> searchStudentList() {
+  public List<StudentInfo> searchStudentList() {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
     List<StudentAppStatus> studentAppStatusList = repository.searchStatusList();
     //受講生情報とコース情報を紐づけ
     List<StudentDetail>studentDetails = converter.convertStudentDetails(studentList,studentCourseList);
     //コース情報に申し込み状況を紐づけ
-    return converter.convertCourseStatus(studentDetails,studentAppStatusList);
+    return converter.convertStudentInfo(studentDetails,studentAppStatusList);
   }
 
   /**
@@ -54,15 +54,20 @@ public class StudentService {
    * @return 受講生詳細
    */
 
-  public StudentDetail searchStudent(int id) {
+  public List<StudentInfo> searchStudent(int id) {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
-    //コースIDを取得して、コースに対して申し込み状況を紐づけしてコースにセットする
+    List<StudentInfo>studentInfoList = new ArrayList<>();
     for (StudentCourse studentCourse : studentCourseList){
       StudentAppStatus studentAppStatus = repository.searchStudentStatus(studentCourse.getId());
-      studentCourse.setStatus(studentAppStatus);
+
+      StudentInfo studentInfo = new StudentInfo();
+      studentInfo.setStudent(student);
+      studentInfo.setStudentCourse(studentCourse);
+      studentInfo.setStudentAppStatus(studentAppStatus);
+      studentInfoList.add(studentInfo);
     }
-    return new StudentDetail(student, studentCourseList);
+    return studentInfoList;
   }
 
   /**
@@ -80,11 +85,12 @@ public class StudentService {
       int studentCourseId = studentAppStatus.getStudentCourseId();
       StudentCourse studentCourse = repository.searchStudentCourseById(studentCourseId);
       Student student = repository.searchStudent(studentCourse.getStudentsId());
-      StudentInfo info = new StudentInfo();
-      info.setStudent(student);
-      info.setStudentCourse(studentCourse);
-      info.setStudentAppStatus(studentAppStatus);
-      studentInfoList.add(info);
+
+      StudentInfo studentInfo = new StudentInfo();
+      studentInfo.setStudent(student);
+      studentInfo.setStudentCourse(studentCourse);
+      studentInfo.setStudentAppStatus(studentAppStatus);
+      studentInfoList.add(studentInfo);
     });
     return studentInfoList;
 
@@ -95,22 +101,20 @@ public class StudentService {
    * 受講生と受講生コース情報と申し込み情報を個別に登録し、受講生コース情報には受講生情報を紐づける値やコース開始日、コース終了日を設定します。
    * 受講生申し込み情報には受講生コース情報を紐づける値を設定します。
    *
-   * @param studentDetail 受講生詳細
+   * @param studentInfo 受講生詳細
    * @return 登録を付与した受講生詳細
    */
 
   @Transactional //登録、更新、削除する項目につける、必須！　基本はServiceでつける。
   //Transactional -> 複数の処理を一つのまとまりとして扱う仕組みのこと
-  public StudentDetail registerStudent(StudentDetail studentDetail) {
-    Student student = studentDetail.getStudent();
-    repository.registerStudent(student);
-    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-      initStudentsCourse(studentCourse, student.getId());
-      repository.registerStudentCourse(studentCourse);
-      linkCourseToStatus(studentCourse.getStatus(), studentCourse.getId());
-      repository.registerStudentAppStatus(studentCourse.getStatus());
-      }
-    return studentDetail;
+  public StudentInfo registerStudent(StudentInfo studentInfo) {
+    repository.registerStudent(studentInfo.getStudent());
+    initStudentsCourse(studentInfo.getStudentCourse(), studentInfo.getStudent().getId());
+    repository.registerStudentCourse(studentInfo.getStudentCourse());
+    linkCourseToStatus(studentInfo.getStudentAppStatus(), studentInfo.getStudentCourse().getId());
+    repository.registerStudentAppStatus(studentInfo.getStudentAppStatus());
+
+    return studentInfo;
   }
 
   /**
@@ -140,14 +144,14 @@ public class StudentService {
   /**
    * 受講生詳細の更新を行います。 受講生と受講生コース情報をそれぞれ更新します。
    *
-   * @param studentDetail 受講生詳細
+   * @param studentInfoList 受講生詳細
    */
   @Transactional
-  public void updateStudent(StudentDetail studentDetail) {
-    repository.updateStudent(studentDetail.getStudent());
-    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-      repository.updateStudentCourse(studentCourse);
-      repository.updateStudentAppStatus(studentCourse.getStatus());
+  public void updateStudent(List<StudentInfo>studentInfoList) {
+       for(StudentInfo studentInfo : studentInfoList){
+      repository.updateStudent(studentInfo.getStudent());
+      repository.updateStudentCourse(studentInfo.getStudentCourse());
+      repository.updateStudentAppStatus(studentInfo.getStudentAppStatus());
     }
   }
 }

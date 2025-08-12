@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import raisetech.student.management.data.Student;
 import raisetech.student.management.data.StudentAppStatus;
 import raisetech.student.management.data.StudentCourse;
+import raisetech.student.management.data.StudentInfo;
 import raisetech.student.management.domain.StudentDetail;
 
 
@@ -43,20 +44,27 @@ public class StudentConverter {
     });
     return studentDetails;
   }
-  public List<StudentDetail> convertCourseStatus(List<StudentDetail> studentDetails,
-      List<StudentAppStatus> studentAppStatusList){
   //コース情報と申し込み情報の紐づけ
-    Map<Integer,StudentAppStatus> studentAppStatusMap = new HashMap<>();
-    for(StudentAppStatus studentAppstatus : studentAppStatusList){
-      studentAppStatusMap.put(studentAppstatus.getStudentCourseId(),studentAppstatus);
+  public List<StudentInfo> convertStudentInfo(List<StudentDetail> studentDetails,
+      List<StudentAppStatus> studentAppStatusList) {
+    Map<Integer, StudentAppStatus> studentAppStatusMap = new HashMap<>();
+    for (StudentAppStatus studentAppstatus : studentAppStatusList) {
+      studentAppStatusMap.put(studentAppstatus.getStudentCourseId(), studentAppstatus);
     }
+    List<StudentInfo>studentInfoList = new ArrayList<>();
+    for (StudentDetail studentDetail : studentDetails) {
+      for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
+        StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
 
-    studentDetails.stream().flatMap(studentDetail -> studentDetail.getStudentCourseList().stream())
-        .forEach(studentCourse -> {
-          StudentAppStatus studentAppStatus = studentAppStatusMap.get(studentCourse.getId());
-          studentCourse.setStatus(studentAppStatus);
-        });
-  return studentDetails;
+        StudentInfo studentInfo = new StudentInfo();
+        studentInfo.setStudent(studentDetail.getStudent());
+        studentInfo.setStudentCourse(studentCourse);
+        studentInfo.setStudentAppStatus(studentAppStatus);
+
+        studentInfoList.add(studentInfo);
+      }
+    }
+    return studentInfoList;
   }
   }
 

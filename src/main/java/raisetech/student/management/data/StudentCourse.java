@@ -35,7 +35,4 @@ public class StudentCourse {
   @Schema(description = "受講終了日" , example = "2025.09.01")
   private LocalDateTime endDate;
 
-  @Schema(description = "申し込み状況" , example = "受講中")
-  @NotNull
-  private StudentAppStatus status;
 }

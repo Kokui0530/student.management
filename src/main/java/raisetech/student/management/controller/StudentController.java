@@ -44,7 +44,7 @@ public class StudentController {
   @Operation(summary = "一覧検索" , description = "受講生の一覧を検索します。")
   @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() {
+  public List<StudentInfo> getStudentList() {
     return service.searchStudentList();
   }
 
@@ -58,7 +58,7 @@ public class StudentController {
   @ApiResponse(responseCode = "200", description = "登録が完了しました。")
 
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(
+  public List<StudentInfo> getStudent(
       @PathVariable @Min(1) int id) {
     return service.searchStudent(id);
   }
@@ -77,7 +77,7 @@ public class StudentController {
   /**
    * 受講生詳細の登録を行います
    *
-   * @param studentDetail 受講生詳細
+   * @param studentInfo 受講生詳細
    * @return 実行結果
    */
 
@@ -85,22 +85,22 @@ public class StudentController {
   @Operation(summary = "受講生登録" , description = "受講生を登録します。")
   @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @PostMapping("/registerStudent")
-  public ResponseEntity<StudentDetail> registerStudent(@RequestBody @Valid StudentDetail studentDetail) {
-    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail);
+  public ResponseEntity <StudentInfo> registerStudent(@RequestBody @Valid StudentInfo studentInfo) {
+    StudentInfo responseStudentInfo = service.registerStudent(studentInfo);
+    return ResponseEntity.ok(responseStudentInfo);
   }
 
   /**
    * 受講生詳細の更新を行います。 キャンセルフラグの更新もここで行います(論理削除)
    *
-   * @param studentDetail 受講生詳細
+   * @param studentInfoList 受講生詳細
    * @return 実行結果
    */
   @Operation(summary = "受講生詳細更新" , description = "受講生の詳細情報を更新します。")
   @ApiResponse(responseCode = "200",description = "登録が完了しました。")
   @PutMapping("/updateStudent") //更新内容を入力するところ
-  public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
-    service.updateStudent(studentDetail);
+  public ResponseEntity<String> updateStudent(@RequestBody @Valid List<StudentInfo>studentInfoList) {
+    service.updateStudent(studentInfoList);
     return ResponseEntity.ok("更新が成功しました");
   }
 

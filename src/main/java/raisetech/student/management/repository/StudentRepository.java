@@ -67,6 +67,13 @@ public interface StudentRepository {
   StudentAppStatus searchStudentStatus(int StudentCourseId);
 
   /**
+   * 申し込み情報ひ紐づくコース情報、受講生詳細を検索します。
+   * @param status 申し込み情報
+   * @return 申し込み情報に紐づくコース情報と受講生詳細
+   */
+  List<StudentAppStatus> searchStudentAppStatus(String status);
+
+  /**
    * 受講生を新規登録します。IDに関しては自動採番を行う。
    *
    * @param student 受講生
@@ -110,8 +117,6 @@ public interface StudentRepository {
   void updateStudentAppStatus(StudentAppStatus StudentAppStatus);
 
 
-  //statusごとの検索
-  List<StudentAppStatus> searchStudentAppStatus(String status);
 
 
 
