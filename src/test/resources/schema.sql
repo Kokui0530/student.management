@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS students (
    age INT,
    gender VARCHAR(100),
    remark VARCHAR(100),
-   isdeleted VARCHAR(100)
+   is_deleted VARCHAR(100)
 );
 
 CREATE TABLE IF NOT EXISTS students_courses (

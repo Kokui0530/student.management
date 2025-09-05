@@ -61,6 +61,7 @@ public class StudentController {
       @PathVariable @Min(1) int id) {
     return service.searchStudent(id);
   }
+  //@PathVariable URLパスから値を取得するために使うアノテーション
 
   /**
    * 受講生詳細検索です。申し込み情報に紐づくコース情報、受講生詳細を取得します。
@@ -73,6 +74,7 @@ public class StudentController {
   public List<StudentInfo> getStudentInfo(@RequestParam String status) {
     return service.searchStudentAppStatus(status);
   }
+  //@RequestParam クエリパラメータをメソッドの引数として取得する
 
   /**
    * 受講生詳細の登録を行います
@@ -89,6 +91,14 @@ public class StudentController {
     StudentInfo responseStudentInfo = service.registerStudent(studentInfo);
     return ResponseEntity.ok(responseStudentInfo);
   }
+
+  //return ResponseEntity.ok(responseStudentInfo);　→　ステータス200、意味：「リクエストは成功し、結果を返します」Get,Putによく使う
+  //return ResponseEntity.status(HttpStatus.CREATED).body(responseStudentInfo) → ステータス201、意味：「新しいリソースが作成されました」Postでよく使う
+
+  //@RequestBody ボディ部分に含まれているデータを、メソッドの引数として受け取るためのアノテーション
+  //SON形式のデータが送られてきた場合、@RequestBodyを使って、そのJSONデータをJavaオブジェクトに変換し、
+  // 利用できるようにすることができます
+
 
   /**
    * 受講生詳細の更新を行います。 キャンセルフラグの更新もここで行います(論理削除)
