@@ -52,6 +52,7 @@ public class Student {
   private String remark;
 
   @Schema(description = "削除フラグ" , example = "退会")
-  private boolean isDeleted;
+  private String isDeleted;
+
 
 }
