@@ -56,7 +56,7 @@ class StudentRepositoryTest {
     student.setAge(39);
     student.setGender("男性");
     student.setRemark("");
-    student.setDeleted(false);
+    student.setIsDeleted("在籍");
 
     sut.registerStudent(student);
     List<Student> actual = sut.search();
@@ -92,7 +92,7 @@ class StudentRepositoryTest {
     student.setAge(39);
     student.setGender("男性");
     student.setRemark("");
-    student.setDeleted(false);
+    student.setIsDeleted("在籍");
 
     sut.updateStudent(student);
     Student actual = sut.searchStudent(id);
