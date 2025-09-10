@@ -167,7 +167,7 @@ class StudentConverterTest {
     student.setAge(41);
     student.setGender("男");
     student.setRemark("");
-    student.setDeleted("在籍");
+    student.setDeleted(false);
     return student;
   }
 }
