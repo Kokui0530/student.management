@@ -46,9 +46,9 @@
 
   <!--受講生を新規登録 -->
   <insert id="registerStudent" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,isdeleted)
+    INSERT INTO students(name , furigana , nickname , mail , region , age,gender,remark,is_deleted)
     VALUES(#{name}, #{furigana}, #{nickname}, #{mail}, #{region}, #{age}, #{gender},
-    #{remark},false)
+    #{remark},#{isDeleted})
   </insert>
 
   <!--受講生コース情報を新規登録 -->
@@ -67,7 +67,7 @@
   <update id="updateStudent">
     UPDATE students SET name=#{name} , furigana=#{furigana} , nickname=#{nickname} , mail=#{mail} ,
     region=#{region},
-    age=#{age} , gender=#{gender} , remark=#{remark} , isdeleted=#{isDeleted} WHERE id=#{id}
+    age=#{age} , gender=#{gender} , remark=#{remark} , is_deleted=#{isDeleted} WHERE id=#{id}
   </update>
 
   <!--受講生コース情報のコース名を更新-->

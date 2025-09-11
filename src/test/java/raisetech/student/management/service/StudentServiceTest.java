@@ -70,12 +70,16 @@ class StudentServiceTest {
     studentCourse.setId(id);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
     StudentAppStatus studentAppStatus = new StudentAppStatus();
+    StudentInfo studentInfo = new StudentInfo();
+    studentInfo.setStudent(student);
+    studentInfo.setStudentCourse(studentCourse);
+    studentInfo.setStudentAppStatus(studentAppStatus);
 
     Mockito.when(repository.searchStudent(id)).thenReturn(student);
     Mockito.when(repository.searchStudentCourse(id)).thenReturn(studentCourseList);
     Mockito.when(repository.searchStudentStatus(id)).thenReturn(studentAppStatus);
 
-    StudentDetail expected = new StudentDetail(student,studentCourseList);
+    List<StudentInfo> expected = List.of(studentInfo);
     List<StudentInfo> actual =  sut.searchStudent(id);
 
     verify(repository,times(1)).searchStudent(id);
